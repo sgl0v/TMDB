@@ -51,20 +51,26 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
 
     private weak var navigator: MoviesSearchNavigator?
     private var cancellables: [AnyCancellable] = []
+    struct Schedulers {
+        private init() {}
+        static let main = RunLoop.main
+        static let background = OperationQueue()
+    }
 
     init(navigator: MoviesSearchNavigator) {
         self.navigator = navigator
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let trigger = Publishers.Merge(input.appear.map({ "" }), input.search.debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
-        let searchResult = search(trigger).receive(on: RunLoop.main).share()
+        let trigger = Publishers.Merge(input.appear.map({ "hello" }), input.search.debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
+        let searchResult = search(trigger).receive(on: Schedulers.main).share()
         let posts = searchResult
             .flatMap({ result -> AnyPublisher<[Post], Never> in
                 guard case .success(let posts) = result else { return .empty() }
                 return .just(posts)
             })
             .removeDuplicates()
+            .subscribe(on: Schedulers.background)
             .eraseToAnyPublisher()
         let loading = Publishers.Merge(trigger.map({_ in true }), searchResult.map({ _ in false })).eraseToAnyPublisher()
         let error = searchResult
@@ -74,8 +80,9 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
             })
             .eraseToAnyPublisher()
 
-        input.selection
-            .combineLatest(posts, { (idx, posts) in return posts[idx].id })
+        Publishers.CombineLatest(posts, input.selection)
+            .receive(on: RunLoop.main)
+            .map({ (posts, idx) in return posts[idx].id })
             .sink(receiveValue: { [unowned self] sessionId in self.navigator?.showDetails(forMovie: "\(sessionId)") })
             .store(in: &cancellables)
 

@@ -9,7 +9,7 @@
 import UIKit
 import Combine
 
-class MoviesSearchViewController : UITableViewController {
+class MoviesSearchViewController : UIViewController {
 
     private var cancellables: [AnyCancellable] = []
     private let viewModel: MoviesSearchViewModelType
@@ -18,10 +18,12 @@ class MoviesSearchViewController : UITableViewController {
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
     private var posts = [Post]()
+    @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet private var tableView: UITableView!
 
     init(viewModel: MoviesSearchViewModelType) {
         self.viewModel = viewModel
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -30,15 +32,8 @@ class MoviesSearchViewController : UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "postId")
-        let input = MoviesSearchViewModelInput(appear: appear.eraseToAnyPublisher(), disappear: disappear.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher(), search: search.eraseToAnyPublisher())
-        let output = viewModel.transform(input: input)
-        output.posts.sink {[unowned self] posts in
-            self.posts = posts
-            self.tableView.reloadData()
-        }
-        .store(in: &cancellables)
+        configureUI()
+        bind(to: viewModel)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -51,11 +46,35 @@ class MoviesSearchViewController : UITableViewController {
         disappear.send(())
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    private func configureUI() {
+        tableView.tableFooterView = UIView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "postId")
+    }
+
+    private func bind(to viewModel: MoviesSearchViewModelType) {
+        let input = MoviesSearchViewModelInput(appear: appear.eraseToAnyPublisher(), disappear: disappear.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher(), search: search.eraseToAnyPublisher())
+        let output = viewModel.transform(input: input)
+
+        output.posts.sink {[unowned self] posts in
+            self.posts = posts
+            self.tableView.reloadData()
+        }
+        .store(in: &cancellables)
+
+        output.loading.sink(receiveValue: {[unowned self] isLoading in
+            self.tableView.isHidden = isLoading
+            self.loadingIndicator.isHidden = !isLoading
+        }).store(in: &cancellables)
+    }
+}
+
+extension MoviesSearchViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "postId") else {
             return UITableViewCell()
         }
@@ -64,7 +83,7 @@ class MoviesSearchViewController : UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selection.send(indexPath.row)
     }
 }

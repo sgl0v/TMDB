@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoviesSearchViewController" customModule="TMDB" customModuleProvider="target">
+            <connections>
+                <outlet property="loadingIndicator" destination="R7v-P1-Lhv" id="TFv-tY-B2R"/>
+                <outlet property="tableView" destination="car-Qh-wir" id="eCk-xA-ZSt"/>
+                <outlet property="view" destination="iN0-l3-epB" id="1Ha-b4-6XW"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="R7v-P1-Lhv">
+                    <rect key="frame" x="197" y="443" width="20" height="20"/>
+                </activityIndicatorView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="car-Qh-wir">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="bHx-uc-9ag"/>
+                        <outlet property="delegate" destination="-1" id="dJK-T6-310"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="car-Qh-wir" secondAttribute="bottom" id="RhQ-bM-Myq"/>
+                <constraint firstItem="car-Qh-wir" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="S6n-XS-dr8"/>
+                <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Yq3-Vz-ykS"/>
+                <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="eX1-YZ-oeR"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="car-Qh-wir" secondAttribute="trailing" id="j4D-f1-fZS"/>
+                <constraint firstItem="car-Qh-wir" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="scJ-PS-xTX"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="139" y="146"/>
+        </view>
+    </objects>
+</document>
