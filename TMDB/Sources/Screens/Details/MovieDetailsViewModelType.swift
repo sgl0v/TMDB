@@ -18,7 +18,7 @@ struct MovieDetailsViewModelInput {
 // OUTPUT
 struct MovieDetailsViewModelOutput {
     /// the movie to present details for
-    let post: AnyPublisher<Post, Never>
+    let post: AnyPublisher<Movie, Never>
     /// Emits when a signup error has occurred and a message should be displayed.
     let error: AnyPublisher<Error, Never>
 }

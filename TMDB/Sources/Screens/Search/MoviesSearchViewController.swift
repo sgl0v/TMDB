@@ -17,7 +17,7 @@ class MoviesSearchViewController : UIViewController {
     private let disappear = PassthroughSubject<Void, Never>()
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
-    private var posts = [Post]()
+    private var movies = [Movie]()
     @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet private var tableView: UITableView!
 
@@ -47,16 +47,19 @@ class MoviesSearchViewController : UIViewController {
     }
 
     private func configureUI() {
+        definesPresentationContext = true
+        title = NSLocalizedString("Movies", comment: "Top Movies")
         tableView.tableFooterView = UIView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "postId")
+        tableView.estimatedRowHeight = 100
+        tableView.registerNib(cellClass: MovieTableViewCell.self)
     }
 
     private func bind(to viewModel: MoviesSearchViewModelType) {
         let input = MoviesSearchViewModelInput(appear: appear.eraseToAnyPublisher(), disappear: disappear.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher(), search: search.eraseToAnyPublisher())
         let output = viewModel.transform(input: input)
 
-        output.posts.sink {[unowned self] posts in
-            self.posts = posts
+        output.movies.sink {[unowned self] movies in
+            self.movies = movies
             self.tableView.reloadData()
         }
         .store(in: &cancellables)
@@ -71,19 +74,20 @@ class MoviesSearchViewController : UIViewController {
 extension MoviesSearchViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        return movies.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "postId") else {
+        guard let cell = tableView.dequeueReusableCell(withClass: MovieTableViewCell.self) else {
+            assertionFailure("Failed to dequeue \(MovieTableViewCell.self)!")
             return UITableViewCell()
         }
-        cell.textLabel?.text = posts[indexPath.row].title
-        cell.detailTextLabel?.text = posts[indexPath.row].body
+        cell.configure(with: movies[indexPath.row])
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selection.send(indexPath.row)
+        selection.send(indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

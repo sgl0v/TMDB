@@ -21,7 +21,7 @@ struct MoviesSearchViewModelInput {
 
 struct MoviesSearchViewModelOuput {
     // Movies
-    let posts: AnyPublisher<[Post], Never>
+    let movies: AnyPublisher<[Movie], Never>
     // Emits when the content is loading
     let loading: AnyPublisher<Bool, Never>
     /// Emits when a signup error has occurred and a message should be displayed.

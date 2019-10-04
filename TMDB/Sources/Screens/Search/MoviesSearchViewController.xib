@@ -23,7 +23,7 @@
                     <rect key="frame" x="197" y="443" width="20" height="20"/>
                 </activityIndicatorView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="car-Qh-wir">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="bHx-uc-9ag"/>
@@ -33,7 +33,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="car-Qh-wir" secondAttribute="bottom" id="RhQ-bM-Myq"/>
+                <constraint firstAttribute="bottom" secondItem="car-Qh-wir" secondAttribute="bottom" id="RhQ-bM-Myq"/>
                 <constraint firstItem="car-Qh-wir" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="S6n-XS-dr8"/>
                 <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Yq3-Vz-ykS"/>
                 <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="eX1-YZ-oeR"/>

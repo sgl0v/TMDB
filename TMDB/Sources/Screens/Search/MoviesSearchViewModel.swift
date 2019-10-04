@@ -9,13 +9,6 @@
 import UIKit
 import Combine
 
-struct Post: Decodable, Equatable {
-    let userId: Int
-    let id: Int
-    let title: String
-    let body: String
-}
-
 extension Publisher {
 
     /// - seealso: https://twitter.com/peres/status/1136132104020881408
@@ -64,10 +57,10 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
         let trigger = Publishers.Merge(input.appear.map({ "hello" }), input.search.debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
         let searchResult = search(trigger).receive(on: Schedulers.main).share()
-        let posts = searchResult
-            .flatMap({ result -> AnyPublisher<[Post], Never> in
-                guard case .success(let posts) = result else { return .empty() }
-                return .just(posts)
+        let movies = searchResult
+            .flatMap({ result -> AnyPublisher<[Movie], Never> in
+                guard case .success(let movies) = result else { return .empty() }
+                return .just(movies)
             })
             .removeDuplicates()
             .subscribe(on: Schedulers.background)
@@ -80,17 +73,17 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
             })
             .eraseToAnyPublisher()
 
-        Publishers.CombineLatest(posts, input.selection)
+        Publishers.CombineLatest(movies, input.selection)
             .receive(on: RunLoop.main)
-            .map({ (posts, idx) in return posts[idx].id })
-            .sink(receiveValue: { [unowned self] sessionId in self.navigator?.showDetails(forMovie: "\(sessionId)") })
+            .map({ (movies, idx) in return movies[idx].id })
+            .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: "\(movieId)") })
             .store(in: &cancellables)
 
-        return MoviesSearchViewModelOuput(posts: posts, loading: loading, error: error)
+        return MoviesSearchViewModelOuput(movies: movies, loading: loading, error: error)
     }
 
-    private func search(_ textInput: AnyPublisher<String, Never>) -> AnyPublisher<Result<[Post], Error>, Never> {
-        let requestPublisher: AnyPublisher<Result<[Post], Error>, Never> = URLSession.shared.dataTaskPublisher(for: URL(string: "https://jsonplaceholder.typicode.com/posts")!)
+    private func search(_ textInput: AnyPublisher<String, Never>) -> AnyPublisher<Result<[Movie], Error>, Never> {
+        let requestPublisher: AnyPublisher<Result<[Movie], Error>, Never> = URLSession.shared.dataTaskPublisher(for: URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=181af7fcab50e40fabe2d10cc8b90e37&language=en-US&page=1")!)
             .mapError { URLSessionError.urlError($0) }
             .print()
             .flatMap { data, response -> AnyPublisher<Data, URLSessionError> in
@@ -104,9 +97,9 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
 
                 return .just(data)
             }
-            .decode(type: [Post].self, decoder: JSONDecoder())
-            .map { Result<[Post], Error>.success($0) }
-        .catch ({ error -> AnyPublisher<Result<[Post], Error>, Never> in
+            .decode(type: Movies.self, decoder: JSONDecoder())
+        .map { Result<[Movie], Error>.success($0.items) }
+        .catch ({ error -> AnyPublisher<Result<[Movie], Error>, Never> in
             print(error)
             return .just(.failure(error))
         })
