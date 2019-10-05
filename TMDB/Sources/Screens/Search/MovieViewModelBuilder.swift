@@ -22,8 +22,17 @@ struct MovieViewModelBuilder {
 }
 
 fileprivate extension Movie {
+    var genreNames: [String] {
+        if let genreIds = genreIds {
+            return genreIds.map { $0.description }
+        }
+        if let genres = genres {
+            return genres.map { $0.name }
+        }
+        return []
+    }
     var subtitle: String {
-        let genresDescription = (genres ?? []).map({ $0.description }).joined(separator: ", ")
+        let genresDescription = genreNames.joined(separator: ", ")
         return "\(releaseYear) | \(genresDescription)"
     }
     var releaseYear: Int {

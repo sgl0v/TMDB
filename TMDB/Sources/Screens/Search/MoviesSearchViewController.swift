@@ -74,6 +74,9 @@ class MoviesSearchViewController : UIViewController {
         .store(in: &cancellables)
 
         output.loading.sink(receiveValue: {[unowned self] isLoading in
+            if isLoading {
+                self.alertViewController.view.isHidden = true
+            }
             self.loadingView.isHidden = !isLoading
         }).store(in: &cancellables)
 
@@ -106,7 +109,11 @@ extension MoviesSearchViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selection.send(indexPath.row)
+        selection.send(movies[indexPath.row].id)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchController.searchBar.resignFirstResponder()
     }
 }

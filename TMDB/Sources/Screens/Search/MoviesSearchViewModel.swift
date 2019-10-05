@@ -21,7 +21,7 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let trigger = input.search.filter({ !$0.isEmpty }).debounce(for: .seconds(1), scheduler: RunLoop.main).eraseToAnyPublisher()
+        let trigger = input.search.filter({ !$0.isEmpty }).debounce(for: .milliseconds(500), scheduler: RunLoop.main).eraseToAnyPublisher()
         let searchResult = trigger
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .share()
@@ -40,9 +40,8 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
             })
             .eraseToAnyPublisher()
 
-        Publishers.CombineLatest(movies, input.selection)
+        input.selection
             .receive(on: RunLoop.main)
-            .map({ (movies, idx) in return movies[idx].id })
             .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
             .store(in: &cancellables)
 
@@ -51,7 +50,7 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
 
     private func viewModels(from movies: [Movie]) -> [MovieViewModel] {
         return movies.map({[unowned self] movie in
-            return MovieViewModelBuilder.viewModel(from: movie, imageLoader: self.useCase.loadImage)
+            return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie) })
         })
     }
 

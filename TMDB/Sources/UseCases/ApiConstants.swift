@@ -11,5 +11,5 @@ import Foundation
 struct ApiConstants {
     static let apiKey = "181af7fcab50e40fabe2d10cc8b90e37"
     static let baseUrl = URL(string: "https://api.themoviedb.org/3")!
-    static let imageUrl = URL(string: "https://image.tmdb.org/t/p/original/")!
+    static let imageUrl = URL(string: "https://image.tmdb.org/t/p/original")!
 }

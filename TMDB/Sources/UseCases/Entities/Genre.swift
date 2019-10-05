@@ -8,7 +8,12 @@
 
 import Foundation
 
-enum Genre: Int, CustomStringConvertible, Decodable, Hashable {
+struct Genre: Decodable {
+    let id: GenreId
+    let name: String
+}
+
+enum GenreId: Int, CustomStringConvertible, Decodable, Hashable {
     case action = 28
     case adventure = 12
     case animation = 16

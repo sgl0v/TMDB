@@ -14,6 +14,8 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var poster: UIImageView!
     @IBOutlet private var header: UILabel!
+    @IBOutlet private var subtitle: UILabel!
+    @IBOutlet private var rating: UILabel!
     @IBOutlet private var overview: UILabel!
 
     private let viewModel: MovieDetailsViewModelType
@@ -54,8 +56,10 @@ class MovieDetailsViewController: UIViewController {
     }
 
     private func render(_ movieDetails: MovieViewModel) {
-        self.header.text = movieDetails.title
-        self.overview.text = movieDetails.overview
+        header.text = movieDetails.title
+        subtitle.text = movieDetails.subtitle
+        rating.text = movieDetails.rating
+        overview.text = movieDetails.overview
         movieDetails.poster
             .assign(to: \UIImageView.image, on: self.poster)
             .store(in: &cancellables)
