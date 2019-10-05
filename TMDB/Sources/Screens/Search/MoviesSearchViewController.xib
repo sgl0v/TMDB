@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoviesSearchViewController" customModule="TMDB" customModuleProvider="target">
             <connections>
-                <outlet property="loadingIndicator" destination="R7v-P1-Lhv" id="TFv-tY-B2R"/>
+                <outlet property="loadingView" destination="RBQ-JK-YmO" id="ji9-AO-1eb"/>
                 <outlet property="tableView" destination="car-Qh-wir" id="eCk-xA-ZSt"/>
                 <outlet property="view" destination="iN0-l3-epB" id="1Ha-b4-6XW"/>
             </connections>
@@ -19,9 +19,6 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="R7v-P1-Lhv">
-                    <rect key="frame" x="197" y="443" width="20" height="20"/>
-                </activityIndicatorView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="car-Qh-wir">
                     <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -30,15 +27,30 @@
                         <outlet property="delegate" destination="-1" id="dJK-T6-310"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBQ-JK-YmO">
+                    <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="R7v-P1-Lhv">
+                            <rect key="frame" x="197" y="416" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerX" secondItem="RBQ-JK-YmO" secondAttribute="centerX" id="HMt-vh-jdT"/>
+                        <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerY" secondItem="RBQ-JK-YmO" secondAttribute="centerY" id="cpA-jp-iih"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="RBQ-JK-YmO" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="P1d-kq-dgc"/>
                 <constraint firstAttribute="bottom" secondItem="car-Qh-wir" secondAttribute="bottom" id="RhQ-bM-Myq"/>
                 <constraint firstItem="car-Qh-wir" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="S6n-XS-dr8"/>
-                <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Yq3-Vz-ykS"/>
-                <constraint firstItem="R7v-P1-Lhv" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="eX1-YZ-oeR"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="RBQ-JK-YmO" secondAttribute="trailing" id="U9i-IF-uzs"/>
+                <constraint firstAttribute="bottom" secondItem="RBQ-JK-YmO" secondAttribute="bottom" id="isu-ya-f4K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="car-Qh-wir" secondAttribute="trailing" id="j4D-f1-fZS"/>
                 <constraint firstItem="car-Qh-wir" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="scJ-PS-xTX"/>
+                <constraint firstItem="RBQ-JK-YmO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="xVX-cy-eJb"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="139" y="146"/>

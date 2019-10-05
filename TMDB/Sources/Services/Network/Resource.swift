@@ -16,7 +16,7 @@ struct Resource<T: Decodable> {
             return nil
         }
         components.queryItems = parameters.keys.map { key in
-            URLQueryItem(name: key.URLEscaped, value: parameters[key]?.description.URLEscaped)
+            URLQueryItem(name: key, value: parameters[key]?.description)
         }
         guard let url = components.url else {
             return nil
@@ -27,11 +27,5 @@ struct Resource<T: Decodable> {
     init(url: URL, parameters: [String: CustomStringConvertible] = [:]) {
         self.url = url
         self.parameters = parameters
-    }
-}
-
-extension String {
-    var URLEscaped: String {
-        return self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
     }
 }

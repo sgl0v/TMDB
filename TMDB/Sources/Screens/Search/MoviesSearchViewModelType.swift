@@ -9,14 +9,10 @@
 import Combine
 
 struct MoviesSearchViewModelInput {
-    /// called when a screen becomes visible
-    let appear: AnyPublisher<Void, Never>
-    /// called when a screen becomes hidden
-    let disappear: AnyPublisher<Void, Never>
-    /// called when the user selected an item from the list
-    let selection: AnyPublisher<Int, Never>
     // triggered when the search query is updated
     let search: AnyPublisher<String, Never>
+    /// called when the user selected an item from the list
+    let selection: AnyPublisher<Int, Never>
 }
 
 struct MoviesSearchViewModelOuput {

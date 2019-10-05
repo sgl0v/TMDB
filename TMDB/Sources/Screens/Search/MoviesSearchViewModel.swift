@@ -21,7 +21,7 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let trigger = Publishers.Merge(input.appear.map({ "" }), input.search.filter({ !$0.isEmpty }).debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
+        let trigger = input.search.filter({ !$0.isEmpty }).debounce(for: .seconds(1), scheduler: RunLoop.main).eraseToAnyPublisher()
         let searchResult = trigger
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .share()

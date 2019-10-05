@@ -11,11 +11,11 @@ import Foundation
 extension Resource {
 
     static func movies(query: String) -> Resource<Movies> {
-        let url = ApiConstants.baseUrl.appendingPathComponent("/movie/popular")
+        let url = ApiConstants.baseUrl.appendingPathComponent("/search/movie")
         let parameters: [String : CustomStringConvertible] = [
             "api_key": ApiConstants.apiKey,
-            "language": "en-US",
-            "page": 1
+            "query": query,
+            "language": Locale.preferredLanguages[0]
             ]
         return Resource<Movies>(url: url, parameters: parameters)
     }
@@ -24,7 +24,7 @@ extension Resource {
         let url = ApiConstants.baseUrl.appendingPathComponent("/movie/\(movieId)")
         let parameters: [String : CustomStringConvertible] = [
             "api_key": ApiConstants.apiKey,
-            "language": "en-US"
+            "language": Locale.preferredLanguages[0]
             ]
         return Resource<Movie>(url: url, parameters: parameters)
     }

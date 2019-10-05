@@ -13,13 +13,19 @@ class MoviesSearchViewController : UIViewController {
 
     private var cancellables: [AnyCancellable] = []
     private let viewModel: MoviesSearchViewModelType
-    private let appear = PassthroughSubject<Void, Never>()
-    private let disappear = PassthroughSubject<Void, Never>()
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
     private var movies = [MovieViewModel]()
-    @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet private var loadingView: UIView!
     @IBOutlet private var tableView: UITableView!
+    private lazy var alertViewController = AlertViewController(nibName: nil, bundle: nil)
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.tintColor = UIColor.black
+        searchController.searchBar.delegate = self
+        return searchController
+    }()
 
     init(viewModel: MoviesSearchViewModelType) {
         self.viewModel = viewModel
@@ -36,38 +42,51 @@ class MoviesSearchViewController : UIViewController {
         bind(to: viewModel)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        appear.send(())
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        disappear.send(())
-    }
-
     private func configureUI() {
         definesPresentationContext = true
         title = NSLocalizedString("Movies", comment: "Top Movies")
+
         tableView.tableFooterView = UIView()
         tableView.estimatedRowHeight = 100
         tableView.registerNib(cellClass: MovieTableViewCell.self)
+
+        navigationItem.searchController = self.searchController
+        searchController.isActive = true
+
+        add(alertViewController)
+        alertViewController.showStartSearch()
     }
 
     private func bind(to viewModel: MoviesSearchViewModelType) {
-        let input = MoviesSearchViewModelInput(appear: appear.eraseToAnyPublisher(), disappear: disappear.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher(), search: search.eraseToAnyPublisher())
+        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher())
         let output = viewModel.transform(input: input)
 
         output.movies.sink {[unowned self] movies in
+            guard !movies.isEmpty else {
+                self.alertViewController.view.isHidden = false
+                self.alertViewController.showNoResults()
+                return
+            }
+            self.alertViewController.view.isHidden = true
             self.movies = movies
             self.tableView.reloadData()
         }
         .store(in: &cancellables)
 
         output.loading.sink(receiveValue: {[unowned self] isLoading in
-            self.tableView.isHidden = isLoading
-            self.loadingIndicator.isHidden = !isLoading
+            self.loadingView.isHidden = !isLoading
         }).store(in: &cancellables)
+
+        output.error.sink(receiveValue: {[unowned self] isLoading in
+            self.alertViewController.view.isHidden = false
+            self.alertViewController.showDataLoadingError()
+        }).store(in: &cancellables)
+    }
+}
+
+extension MoviesSearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        search.send(searchText)
     }
 }
 
