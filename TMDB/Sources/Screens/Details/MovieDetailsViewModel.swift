@@ -20,25 +20,21 @@ class MovieDetailsViewModel: MovieDetailsViewModelType {
     }
 
     func transform(input: MovieDetailsViewModelInput) -> MovieDetailsViewModelOutput {
-        let result = input.appear
+        let movieDetails = input.appear
             .flatMap({[unowned self] _ in self.useCase.movieDetails(with: self.movieId) })
-            .share()
-            .eraseToAnyPublisher()
-        let movieDetails = result
-            .flatMap({ result -> AnyPublisher<MovieViewModel, Never> in
-                guard case .success(let movieDetails) = result else { return .empty() }
-                let viewModel = MovieViewModelBuilder.viewModel(from: movieDetails, imageLoader: self.useCase.loadImage)
-                return .just(viewModel)
+            .map({ result -> MovieDetailsState in
+                switch result {
+                    case .success(let movie): return .success(self.viewModel(from: movie))
+                    case .failure(let error): return .failure(error)
+                }
             })
             .eraseToAnyPublisher()
-        let loading = Publishers.Merge(input.appear.map({_ in true }), result.map({ _ in false })).eraseToAnyPublisher()
-        let error = result
-            .flatMap({ result -> AnyPublisher<Error, Never> in
-                guard case .failure(let error) = result else { return .empty() }
-                return .just(error)
-            })
-            .eraseToAnyPublisher()
+        let loading: MovieDetailsViewModelOutput = input.appear.map({_ in .loading }).eraseToAnyPublisher()
 
-        return MovieDetailsViewModelOutput(movieDetails: movieDetails, loading: loading, error: error)
+        return Publishers.Merge(loading, movieDetails).removeDuplicates().eraseToAnyPublisher()
+    }
+
+    private func viewModel(from movie: Movie) -> MovieViewModel {
+        return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie) })
     }
 }

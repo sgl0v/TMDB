@@ -23,12 +23,9 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
         let searchInput = input.search.debounce(for: .milliseconds(500), scheduler: RunLoop.main)
         let trigger = searchInput.filter({ !$0.isEmpty })
-        let searchResult = trigger
+        let movies = trigger
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
-            .share()
-            .eraseToAnyPublisher()
-        let movies = searchResult
-            .map({ result -> State in
+            .map({ result -> MoviesSearchState in
                 switch result {
                     case .success([]): return .noResults
                     case .success(let movies): return .success(self.viewModels(from: movies))
@@ -38,9 +35,9 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
             .eraseToAnyPublisher()
         let loading: MoviesSearchViewModelOuput = trigger.map({_ in .loading }).eraseToAnyPublisher()
 
-        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<State, Never> in .just(.idle) }).eraseToAnyPublisher()
-        let initialState: AnyPublisher<State, Never> = .just(.idle)
-        let noInputState: AnyPublisher<State, Never> = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
+        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<MoviesSearchState, Never> in .just(.idle) }).eraseToAnyPublisher()
+        let initialState: MoviesSearchViewModelOuput = .just(.idle)
+        let noInputState: MoviesSearchViewModelOuput = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
         let idle: MoviesSearchViewModelOuput = Publishers.Merge3(initialState, cancelSearchState, noInputState).eraseToAnyPublisher()
 
         input.selection

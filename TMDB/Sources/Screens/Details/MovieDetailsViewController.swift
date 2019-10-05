@@ -43,19 +43,30 @@ class MovieDetailsViewController: UIViewController {
 
     private func bind(to viewModel: MovieDetailsViewModelType) {
         let input = MovieDetailsViewModelInput(appear: appear.eraseToAnyPublisher())
+        
         let output = viewModel.transform(input: input)
 
-        output.movieDetails.sink(receiveValue: {[unowned self] movieDetails in
-            self.render(movieDetails)
-        }).store(in: &cancellables)
-
-        output.loading.sink(receiveValue: {[unowned self] isLoading in
-            self.contentView.isHidden = isLoading
-            self.loadingIndicator.isHidden = !isLoading
+        output.sink(receiveValue: {[unowned self] state in
+            self.render(state)
         }).store(in: &cancellables)
     }
 
-    private func render(_ movieDetails: MovieViewModel) {
+    private func render(_ state: MovieDetailsState) {
+        switch state {
+        case .loading:
+            self.contentView.isHidden = true
+            self.loadingIndicator.isHidden = false
+        case .failure:
+            self.contentView.isHidden = true
+            self.loadingIndicator.isHidden = true
+        case .success(let movieDetails):
+            self.contentView.isHidden = false
+            self.loadingIndicator.isHidden = true
+            show(movieDetails)
+        }
+    }
+
+    private func show(_ movieDetails: MovieViewModel) {
         header.text = movieDetails.title
         subtitle.text = movieDetails.subtitle
         rating.text = movieDetails.rating

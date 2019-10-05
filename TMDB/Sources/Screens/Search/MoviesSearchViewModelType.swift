@@ -17,7 +17,7 @@ struct MoviesSearchViewModelInput {
     let selection: AnyPublisher<Int, Never>
 }
 
-enum State {
+enum MoviesSearchState {
     case idle
     case loading
     case success([MovieViewModel])
@@ -25,8 +25,8 @@ enum State {
     case failure(Error)
 }
 
-extension State: Equatable {
-    static func == (lhs: State, rhs: State) -> Bool {
+extension MoviesSearchState: Equatable {
+    static func == (lhs: MoviesSearchState, rhs: MoviesSearchState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle): return true
         case (.loading, .loading): return true
@@ -38,7 +38,7 @@ extension State: Equatable {
     }
 }
 
-typealias MoviesSearchViewModelOuput = AnyPublisher<State, Never>
+typealias MoviesSearchViewModelOuput = AnyPublisher<MoviesSearchState, Never>
 
 protocol MoviesSearchViewModelType: class {
     /// Trandforms input state to the output state

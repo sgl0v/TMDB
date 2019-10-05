@@ -62,6 +62,7 @@ class MoviesSearchViewController : UIViewController {
         let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(),
                                                cancelSearch: cancelSearch.eraseToAnyPublisher(),
                                                selection: selection.eraseToAnyPublisher())
+
         let output = viewModel.transform(input: input)
 
         output.sink(receiveValue: {[unowned self] state in
@@ -69,7 +70,7 @@ class MoviesSearchViewController : UIViewController {
         }).store(in: &cancellables)
     }
 
-    private func render(_ state: State) {
+    private func render(_ state: MoviesSearchState) {
         switch state {
         case .idle:
             self.alertViewController.view.isHidden = false
