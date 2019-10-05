@@ -21,31 +21,33 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let trigger = input.search.filter({ !$0.isEmpty }).debounce(for: .milliseconds(500), scheduler: RunLoop.main).eraseToAnyPublisher()
+        let searchInput = input.search.debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+        let trigger = searchInput.filter({ !$0.isEmpty })
         let searchResult = trigger
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .share()
+            .eraseToAnyPublisher()
         let movies = searchResult
-            .flatMap({ result -> AnyPublisher<[MovieViewModel], Never> in
-                guard case .success(let movies) = result else { return .empty() }
-                return .just(self.viewModels(from: movies))
-            })
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-        let loading = Publishers.Merge(trigger.map({_ in true }), searchResult.map({ _ in false })).eraseToAnyPublisher()
-        let error = searchResult
-            .flatMap({ result -> AnyPublisher<Error, Never> in
-                guard case .failure(let error) = result else { return .empty() }
-                return .just(error)
+            .map({ result -> State in
+                switch result {
+                    case .success([]): return .noResults
+                    case .success(let movies): return .success(self.viewModels(from: movies))
+                    case .failure(let error): return .failure(error)
+                }
             })
             .eraseToAnyPublisher()
+        let loading: MoviesSearchViewModelOuput = trigger.map({_ in .loading }).eraseToAnyPublisher()
+
+        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<State, Never> in .just(.idle) }).eraseToAnyPublisher()
+        let initialState: AnyPublisher<State, Never> = .just(.idle)
+        let noInputState: AnyPublisher<State, Never> = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
+        let idle: MoviesSearchViewModelOuput = Publishers.Merge3(initialState, cancelSearchState, noInputState).eraseToAnyPublisher()
 
         input.selection
-            .receive(on: RunLoop.main)
             .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
             .store(in: &cancellables)
 
-        return MoviesSearchViewModelOuput(movies: movies, loading: loading, error: error)
+        return Publishers.Merge3(idle, loading, movies).removeDuplicates().eraseToAnyPublisher()
     }
 
     private func viewModels(from movies: [Movie]) -> [MovieViewModel] {

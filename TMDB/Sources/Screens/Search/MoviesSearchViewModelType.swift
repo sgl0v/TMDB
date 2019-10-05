@@ -11,18 +11,34 @@ import Combine
 struct MoviesSearchViewModelInput {
     // triggered when the search query is updated
     let search: AnyPublisher<String, Never>
+    // triggered when the search is cancelled
+    let cancelSearch: AnyPublisher<Void, Never>
     /// called when the user selected an item from the list
     let selection: AnyPublisher<Int, Never>
 }
 
-struct MoviesSearchViewModelOuput {
-    // Movies
-    let movies: AnyPublisher<[MovieViewModel], Never>
-    // Emits when the content is loading
-    let loading: AnyPublisher<Bool, Never>
-    /// Emits when a signup error has occurred and a message should be displayed.
-    let error: AnyPublisher<Error, Never>
+enum State {
+    case idle
+    case loading
+    case success([MovieViewModel])
+    case noResults
+    case failure(Error)
 }
+
+extension State: Equatable {
+    static func == (lhs: State, rhs: State) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle): return true
+        case (.loading, .loading): return true
+        case (.success(let lhsMovies), .success(let rhsMovies)): return lhsMovies == rhsMovies
+        case (.noResults, .noResults): return true
+        case (.failure, .failure): return true
+        default: return false
+        }
+    }
+}
+
+typealias MoviesSearchViewModelOuput = AnyPublisher<State, Never>
 
 protocol MoviesSearchViewModelType: class {
     /// Trandforms input state to the output state

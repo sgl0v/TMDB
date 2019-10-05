@@ -15,6 +15,7 @@ class MoviesSearchViewController : UIViewController {
     private let viewModel: MoviesSearchViewModelType
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
+    private let cancelSearch = PassthroughSubject<Void, Never>()
     private var movies = [MovieViewModel]()
     @IBOutlet private var loadingView: UIView!
     @IBOutlet private var tableView: UITableView!
@@ -58,38 +59,49 @@ class MoviesSearchViewController : UIViewController {
     }
 
     private func bind(to viewModel: MoviesSearchViewModelType) {
-        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher())
+        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(),
+                                               cancelSearch: cancelSearch.eraseToAnyPublisher(),
+                                               selection: selection.eraseToAnyPublisher())
         let output = viewModel.transform(input: input)
 
-        output.movies.sink {[unowned self] movies in
-            guard !movies.isEmpty else {
-                self.alertViewController.view.isHidden = false
-                self.alertViewController.showNoResults()
-                return
-            }
+        output.sink(receiveValue: {[unowned self] state in
+            self.render(state)
+        }).store(in: &cancellables)
+    }
+
+    private func render(_ state: State) {
+        switch state {
+        case .idle:
+            self.alertViewController.view.isHidden = false
+            self.alertViewController.showStartSearch()
+            self.loadingView.isHidden = true
+        case .loading:
             self.alertViewController.view.isHidden = true
+            self.loadingView.isHidden = false
+        case .noResults:
+            self.alertViewController.view.isHidden = false
+            self.alertViewController.showNoResults()
+            self.loadingView.isHidden = true
+        case .failure:
+            self.alertViewController.view.isHidden = false
+            self.alertViewController.showDataLoadingError()
+            self.loadingView.isHidden = true
+        case .success(let movies):
+            self.alertViewController.view.isHidden = true
+            self.loadingView.isHidden = true
             self.movies = movies
             self.tableView.reloadData()
         }
-        .store(in: &cancellables)
-
-        output.loading.sink(receiveValue: {[unowned self] isLoading in
-            if isLoading {
-                self.alertViewController.view.isHidden = true
-            }
-            self.loadingView.isHidden = !isLoading
-        }).store(in: &cancellables)
-
-        output.error.sink(receiveValue: {[unowned self] isLoading in
-            self.alertViewController.view.isHidden = false
-            self.alertViewController.showDataLoadingError()
-        }).store(in: &cancellables)
     }
 }
 
 extension MoviesSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         search.send(searchText)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        cancelSearch.send(())
     }
 }
 
