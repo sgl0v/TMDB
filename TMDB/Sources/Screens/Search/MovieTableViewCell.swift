@@ -12,11 +12,13 @@ class MovieTableViewCell: UITableViewCell, NibProvidable, ReusableView {
 
     @IBOutlet private var title: UILabel!
     @IBOutlet private var overview: UILabel!
+    @IBOutlet private var rating: UILabel!
 }
 
 extension MovieTableViewCell {
     func configure(with movie: Movie) {
         title.text = movie.title
         overview.text = movie.overview
+        rating.text = String(format: "%.2f", movie.voteAverage)
     }
 }

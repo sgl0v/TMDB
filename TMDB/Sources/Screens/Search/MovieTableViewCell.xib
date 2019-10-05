@@ -27,29 +27,50 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSd-3v-acT">
-                                <rect key="frame" x="60" y="53.5" width="362" height="50"/>
+                                <rect key="frame" x="60" y="41.5" width="362" height="74"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="###title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkl-2m-lmU">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="###title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkl-2m-lmU">
                                         <rect key="frame" x="8" y="0.0" width="354" height="24"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="###overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3xb-C8-8P6">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="###2019 | 2h 41m" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3xb-C8-8P6">
                                         <rect key="frame" x="8" y="32" width="354" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-4Z-z8p">
+                                        <rect key="frame" x="8" y="58" width="66.5" height="16"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="iRb-bX-Ei7">
+                                                <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="lgL-nf-JiM"/>
+                                                    <constraint firstAttribute="height" constant="16" id="pAM-Od-Ksl"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="###8.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFy-JC-heC">
+                                                <rect key="frame" x="20" y="0.0" width="46.5" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="3xb-C8-8P6" firstAttribute="leading" secondItem="TSd-3v-acT" secondAttribute="leadingMargin" id="DkQ-Id-3Wb"/>
                                     <constraint firstAttribute="trailing" secondItem="3xb-C8-8P6" secondAttribute="trailing" id="EDM-Dz-liI"/>
+                                    <constraint firstAttribute="bottom" secondItem="LiM-4Z-z8p" secondAttribute="bottom" id="NQW-6R-f4Q"/>
                                     <constraint firstItem="3xb-C8-8P6" firstAttribute="top" secondItem="Zkl-2m-lmU" secondAttribute="bottom" constant="8" id="VZ2-H5-852"/>
-                                    <constraint firstAttribute="bottom" secondItem="3xb-C8-8P6" secondAttribute="bottom" id="WPD-p2-Cbg"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LiM-4Z-z8p" secondAttribute="trailing" id="WmV-OL-RJP"/>
                                     <constraint firstItem="Zkl-2m-lmU" firstAttribute="top" secondItem="TSd-3v-acT" secondAttribute="top" id="fWk-xm-bRK"/>
+                                    <constraint firstItem="3xb-C8-8P6" firstAttribute="bottom" secondItem="LiM-4Z-z8p" secondAttribute="top" constant="-8" id="gH9-zt-EDo"/>
                                     <constraint firstAttribute="trailing" secondItem="Zkl-2m-lmU" secondAttribute="trailing" id="hSb-WZ-Cej"/>
+                                    <constraint firstItem="LiM-4Z-z8p" firstAttribute="leading" secondItem="TSd-3v-acT" secondAttribute="leadingMargin" id="hyD-cw-nCT"/>
                                     <constraint firstItem="Zkl-2m-lmU" firstAttribute="leading" secondItem="TSd-3v-acT" secondAttribute="leadingMargin" id="loA-xP-EIy"/>
                                 </constraints>
                             </view>
@@ -66,9 +87,13 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="overview" destination="3xb-C8-8P6" id="Vem-2J-LfZ"/>
+                <outlet property="rating" destination="yFy-JC-heC" id="PWi-NL-ZQ0"/>
                 <outlet property="title" destination="Zkl-2m-lmU" id="Mas-sJ-Ynr"/>
             </connections>
             <point key="canvasLocation" x="223.18840579710147" y="196.54017857142856"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="star" width="24" height="24"/>
+    </resources>
 </document>

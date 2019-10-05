@@ -9,6 +9,13 @@
 import UIKit
 
 class MovieDetailsViewModel: MovieDetailsViewModelType {
+
+    private let useCase: MoviesUseCaseType
+
+    init(useCase: MoviesUseCaseType) {
+        self.useCase = useCase
+    }
+
     func transform(input: MovieDetailsViewModelInput) -> MovieDetailsViewModelOutput {
         return MovieDetailsViewModelOutput(post: .empty(), error: .empty())
     }

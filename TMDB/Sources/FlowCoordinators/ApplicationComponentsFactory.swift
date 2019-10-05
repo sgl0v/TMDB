@@ -9,7 +9,9 @@
 import UIKit
 
 /// The ApplicationComponentsFactory takes responsibity of creating application components and establishing dependencies between them.
-final class ApplicationComponentsFactory {}
+final class ApplicationComponentsFactory {
+    fileprivate lazy var useCase: MoviesUseCaseType = MoviesUseCase()
+}
 
 extension ApplicationComponentsFactory: ApplicationFlowCoordinatorDependencyProvider {
 
@@ -23,12 +25,12 @@ extension ApplicationComponentsFactory: ApplicationFlowCoordinatorDependencyProv
 extension ApplicationComponentsFactory: MoviesSearchFlowCoordinatorDependencyProvider {
 
     func moviesSearchController(navigator: MoviesSearchNavigator) -> UIViewController {
-        let viewModel = MoviesSearchViewModel(navigator: navigator)
+        let viewModel = MoviesSearchViewModel(useCase: useCase, navigator: navigator)
         return MoviesSearchViewController(viewModel: viewModel)
     }
 
     func movieDetailsController(_ movieId: String) -> UIViewController {
-        let viewModel = MovieDetailsViewModel()
+        let viewModel = MovieDetailsViewModel(useCase: useCase)
         return MovieDetailsViewController(viewModel: viewModel)
     }
 }

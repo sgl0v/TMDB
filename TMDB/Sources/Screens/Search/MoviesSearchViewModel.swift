@@ -34,15 +34,10 @@ extension Publisher {
     }
 }
 
-enum URLSessionError: Error {
-    case invalidResponse
-    case serverErrorMessage(statusCode: Int, data: Data)
-    case urlError(URLError)
-}
-
 class MoviesSearchViewModel: MoviesSearchViewModelType {
 
     private weak var navigator: MoviesSearchNavigator?
+    private let useCase: MoviesUseCaseType
     private var cancellables: [AnyCancellable] = []
     struct Schedulers {
         private init() {}
@@ -50,13 +45,18 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
         static let background = OperationQueue()
     }
 
-    init(navigator: MoviesSearchNavigator) {
+    init(useCase: MoviesUseCaseType, navigator: MoviesSearchNavigator) {
+        self.useCase = useCase
         self.navigator = navigator
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
         let trigger = Publishers.Merge(input.appear.map({ "hello" }), input.search.debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
-        let searchResult = search(trigger).receive(on: Schedulers.main).share()
+        let searchResult = trigger
+            .filter({ !$0.isEmpty })
+            .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
+            .receive(on: Schedulers.main)
+            .share()
         let movies = searchResult
             .flatMap({ result -> AnyPublisher<[Movie], Never> in
                 guard case .success(let movies) = result else { return .empty() }
@@ -80,33 +80,5 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
             .store(in: &cancellables)
 
         return MoviesSearchViewModelOuput(movies: movies, loading: loading, error: error)
-    }
-
-    private func search(_ textInput: AnyPublisher<String, Never>) -> AnyPublisher<Result<[Movie], Error>, Never> {
-        let requestPublisher: AnyPublisher<Result<[Movie], Error>, Never> = URLSession.shared.dataTaskPublisher(for: URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=181af7fcab50e40fabe2d10cc8b90e37&language=en-US&page=1")!)
-            .mapError { URLSessionError.urlError($0) }
-            .print()
-            .flatMap { data, response -> AnyPublisher<Data, URLSessionError> in
-                guard let response = response as? HTTPURLResponse else {
-                    return .fail(.invalidResponse)
-                }
-
-                guard 200..<300 ~= response.statusCode else {
-                    return .fail(.serverErrorMessage(statusCode: response.statusCode, data: data))
-                }
-
-                return .just(data)
-            }
-            .decode(type: Movies.self, decoder: JSONDecoder())
-        .map { Result<[Movie], Error>.success($0.items) }
-        .catch ({ error -> AnyPublisher<Result<[Movie], Error>, Never> in
-            print(error)
-            return .just(.failure(error))
-        })
-        .eraseToAnyPublisher()
-        return textInput
-            .filter({ !$0.isEmpty })
-            .flatMapLatest({ _ in requestPublisher })
-            .eraseToAnyPublisher()
     }
 }
