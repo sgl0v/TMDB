@@ -27,7 +27,7 @@ class MoviesSearchFlowCoordinator: FlowCoordinator {
 
 extension MoviesSearchFlowCoordinator: MoviesSearchNavigator {
 
-    func showDetails(forMovie movieId: String) {
+    func showDetails(forMovie movieId: Int) {
         let controller = self.dependencyProvider.movieDetailsController(movieId)
         self.rootController.pushViewController(controller, animated: true)
     }

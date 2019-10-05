@@ -19,5 +19,5 @@ protocol MoviesSearchFlowCoordinatorDependencyProvider: class {
     func moviesSearchController(navigator: MoviesSearchNavigator) -> UIViewController
 
     // Creates UIViewController to show the details of the movie with specified identifier
-    func movieDetailsController(_ movieId: String) -> UIViewController
+    func movieDetailsController(_ movieId: Int) -> UIViewController
 }

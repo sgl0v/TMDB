@@ -15,7 +15,7 @@ struct Movie {
     let poster: String?
     let voteAverage: Float
     let releaseDate: String?
-    let genres: [Genre]
+    let genres: [Genre]?
 }
 
 extension Movie: Hashable {

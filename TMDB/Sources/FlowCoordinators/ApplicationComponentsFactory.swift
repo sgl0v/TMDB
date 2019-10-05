@@ -35,8 +35,8 @@ extension ApplicationComponentsFactory: MoviesSearchFlowCoordinatorDependencyPro
         return MoviesSearchViewController(viewModel: viewModel)
     }
 
-    func movieDetailsController(_ movieId: String) -> UIViewController {
-        let viewModel = MovieDetailsViewModel(useCase: useCase)
+    func movieDetailsController(_ movieId: Int) -> UIViewController {
+        let viewModel = MovieDetailsViewModel(movieId: movieId, useCase: useCase)
         return MovieDetailsViewController(viewModel: viewModel)
     }
 }

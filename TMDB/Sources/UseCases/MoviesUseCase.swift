@@ -18,6 +18,9 @@ protocol MoviesUseCaseType {
     /// Runs movies search with a query string
     func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never>
 
+    /// Fetches details for movie with specified id
+    func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never>
+
     // Loads image for the given movie
     func loadImage(for movie: Movie) -> AnyPublisher<UIImage?, Never>
 }
@@ -43,6 +46,22 @@ final class MoviesUseCase: MoviesUseCaseType {
                 switch result {
                 case .success(let movies): return .success(movies.items)
                 case .failure(let error): return .failure(error)
+                }
+            })
+            .subscribe(on: Scheduler.backgroundWorkScheduler)
+            .receive(on: Scheduler.mainScheduler)
+            .eraseToAnyPublisher()
+    }
+
+    func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never> {
+        return networkService
+            .load(Resource<Movie>.details(movieId: id))
+            .map({ (result: Result<Movie, NetworkError>) -> Result<Movie, Error> in
+                switch result {
+                case .success(let movie): return .success(movie)
+                case .failure(let error):
+                    print(error)
+                    return .failure(error)
                 }
             })
             .subscribe(on: Scheduler.backgroundWorkScheduler)

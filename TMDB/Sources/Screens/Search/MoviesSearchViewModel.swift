@@ -21,15 +21,14 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let trigger = Publishers.Merge(input.appear.map({ "hello" }), input.search.debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
+        let trigger = Publishers.Merge(input.appear.map({ "" }), input.search.filter({ !$0.isEmpty }).debounce(for: .seconds(2), scheduler: RunLoop.main)).eraseToAnyPublisher()
         let searchResult = trigger
-            .filter({ !$0.isEmpty })
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .share()
         let movies = searchResult
             .flatMap({ result -> AnyPublisher<[MovieViewModel], Never> in
                 guard case .success(let movies) = result else { return .empty() }
-                return .just(movies.map({[unowned self] movie in self.viewModel(from: movie) }))
+                return .just(self.viewModels(from: movies))
             })
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -44,30 +43,16 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
         Publishers.CombineLatest(movies, input.selection)
             .receive(on: RunLoop.main)
             .map({ (movies, idx) in return movies[idx].id })
-            .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: "\(movieId)") })
+            .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
             .store(in: &cancellables)
 
         return MoviesSearchViewModelOuput(movies: movies, loading: loading, error: error)
     }
 
-    private func viewModel(from movie: Movie) -> MovieViewModel {
-        return MovieViewModel(id: movie.id, title: movie.title, subtitle: movie.subtitle, poster: useCase.loadImage(for: movie), rating: String(format: "%.2f", movie.voteAverage))
-    }
-}
-
-fileprivate extension Movie {
-    var subtitle: String {
-        let genresDescription = genres.map({ $0.description }).joined(separator: ", ")
-        return "\(releaseYear) | \(genresDescription)"
-    }
-    var releaseYear: Int {
-        let date = releaseDate.flatMap { Movie.dateFormatter.date(from: $0) } ?? Date()
-        return Calendar.current.component(.year, from: date)
+    private func viewModels(from movies: [Movie]) -> [MovieViewModel] {
+        return movies.map({[unowned self] movie in
+            return MovieViewModelBuilder.viewModel(from: movie, imageLoader: self.useCase.loadImage)
+        })
     }
 
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
 }

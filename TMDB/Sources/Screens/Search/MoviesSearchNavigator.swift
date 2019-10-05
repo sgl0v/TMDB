@@ -10,5 +10,5 @@ import Foundation
 
 protocol MoviesSearchNavigator: class {
     /// Presents the movies details screen
-    func showDetails(forMovie movieId: String)
+    func showDetails(forMovie movieId: Int)
 }

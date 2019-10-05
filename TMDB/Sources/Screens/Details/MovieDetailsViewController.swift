@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import Combine
 
 class MovieDetailsViewController: UIViewController {
+    @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var poster: UIImageView!
+    @IBOutlet private var header: UILabel!
+    @IBOutlet private var overview: UILabel!
+
     private let viewModel: MovieDetailsViewModelType
+    private var cancellables: [AnyCancellable] = []
+    private let appear = PassthroughSubject<Void, Never>()
 
     init(viewModel: MovieDetailsViewModelType) {
         self.viewModel = viewModel
@@ -18,5 +27,37 @@ class MovieDetailsViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("Not supported!")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bind(to: viewModel)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        appear.send(())
+    }
+
+    private func bind(to viewModel: MovieDetailsViewModelType) {
+        let input = MovieDetailsViewModelInput(appear: appear.eraseToAnyPublisher())
+        let output = viewModel.transform(input: input)
+
+        output.movieDetails.sink(receiveValue: {[unowned self] movieDetails in
+            self.render(movieDetails)
+        }).store(in: &cancellables)
+
+        output.loading.sink(receiveValue: {[unowned self] isLoading in
+            self.contentView.isHidden = isLoading
+            self.loadingIndicator.isHidden = !isLoading
+        }).store(in: &cancellables)
+    }
+
+    private func render(_ movieDetails: MovieViewModel) {
+        self.header.text = movieDetails.title
+        self.overview.text = movieDetails.overview
+        movieDetails.poster
+            .assign(to: \UIImageView.image, on: self.poster)
+            .store(in: &cancellables)
     }
 }

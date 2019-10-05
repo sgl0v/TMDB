@@ -13,7 +13,8 @@ import Combine
 struct MovieViewModel {
     let id: Int
     let title: String
-    var subtitle: String
+    let subtitle: String
+    let overview: String
     let poster: AnyPublisher<UIImage?, Never>
     let rating: String
 }
