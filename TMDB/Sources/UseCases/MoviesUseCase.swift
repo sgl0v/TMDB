@@ -18,62 +18,45 @@ protocol MoviesUseCaseType {
     /// Runs movies search with a query string
     func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never>
 
-    // Loads image for the given URL
-    func loadImage(for url: URL) -> AnyPublisher<UIImage, Error>
+    // Loads image for the given movie
+    func loadImage(for movie: Movie) -> AnyPublisher<UIImage?, Never>
 }
 
-class MoviesUseCase: MoviesUseCaseType {
+final class MoviesUseCase: MoviesUseCaseType {
 
-    enum ApiError: Swift.Error {
-        case invalidRequest
-        case invalidResponse
-        case networkError(statusCode: Int, data: Data)
-        case jsonDecodingError(error: Error)
+    private let networkService: NetworkServiceType
+    private let imageLoaderService: ImageLoaderServiceType
+
+    init(networkService: NetworkServiceType, imageLoaderService: ImageLoaderServiceType) {
+        self.networkService = networkService
+        self.imageLoaderService = imageLoaderService
     }
 
     var popularMovies: AnyPublisher<[Movie], Error> {
         fatalError()
     }
 
-    func loadImage(for url: URL) -> AnyPublisher<UIImage, Error> {
-        fatalError()
-    }
-
     func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never> {
-        let requestPublisher: AnyPublisher<Result<[Movie], Error>, Never> = URLSession.shared.dataTaskPublisher(for: URL(string: "https://api.themoviedb.org/3/movie/popular?api_key=181af7fcab50e40fabe2d10cc8b90e37&language=en-US&page=1")!)
-            .mapError { _ in ApiError.invalidRequest }
-            .print()
-            .flatMap { data, response -> AnyPublisher<Data, Error> in
-                guard let response = response as? HTTPURLResponse else {
-                    return .fail(ApiError.invalidResponse)
+        return networkService
+            .load(Resource<Movies>.movies(query: name))
+            .map({ (result: Result<Movies, NetworkError>) -> Result<[Movie], Error> in
+                switch result {
+                case .success(let movies): return .success(movies.items)
+                case .failure(let error): return .failure(error)
                 }
-
-                guard 200..<300 ~= response.statusCode else {
-                    return .fail(ApiError.networkError(statusCode: response.statusCode, data: data))
-                }
-
-                return .just(data)
-            }
-            .decode(type: Movies.self, decoder: jsonDecoder)
-        .map { Result<[Movie], Error>.success($0.items) }
-        .catch ({ error -> AnyPublisher<Result<[Movie], Error>, Never> in
-            print(error)
-            return .just(.failure(ApiError.jsonDecodingError(error: error)))
-        })
-        .eraseToAnyPublisher()
-        return requestPublisher.eraseToAnyPublisher()
+            })
+            .subscribe(on: Scheduler.backgroundWorkScheduler)
+            .receive(on: Scheduler.mainScheduler)
+            .eraseToAnyPublisher()
     }
 
-    private lazy var jsonDecoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(MoviesUseCase.dateFormatter)
-        return decoder
-    }()
-
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyy-MM-dd"
-        return formatter
-    }()
+    func loadImage(for movie: Movie) -> AnyPublisher<UIImage?, Never> {
+        guard let poster = movie.poster else { return .just(nil) }
+        return imageLoaderService
+            .loadImage(with: poster)
+            .subscribe(on: Scheduler.backgroundWorkScheduler)
+            .receive(on: Scheduler.mainScheduler)
+            .eraseToAnyPublisher()
+    }
 
 }

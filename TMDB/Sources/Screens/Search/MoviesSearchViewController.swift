@@ -17,7 +17,7 @@ class MoviesSearchViewController : UIViewController {
     private let disappear = PassthroughSubject<Void, Never>()
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
-    private var movies = [Movie]()
+    private var movies = [MovieViewModel]()
     @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet private var tableView: UITableView!
 

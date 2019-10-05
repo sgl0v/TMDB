@@ -10,7 +10,13 @@ import UIKit
 
 /// The ApplicationComponentsFactory takes responsibity of creating application components and establishing dependencies between them.
 final class ApplicationComponentsFactory {
-    fileprivate lazy var useCase: MoviesUseCaseType = MoviesUseCase()
+    fileprivate lazy var useCase: MoviesUseCaseType = MoviesUseCase(networkService: servicesProvider.network, imageLoaderService: servicesProvider.imageLoader)
+
+    private let servicesProvider: ServicesProvider
+
+    init(servicesProvider: ServicesProvider = ServicesProvider.defaultProvider()) {
+        self.servicesProvider = servicesProvider
+    }
 }
 
 extension ApplicationComponentsFactory: ApplicationFlowCoordinatorDependencyProvider {

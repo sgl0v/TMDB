@@ -9,41 +9,11 @@
 import UIKit
 import Combine
 
-extension Publisher {
-
-    /// - seealso: https://twitter.com/peres/status/1136132104020881408
-    func flatMapLatest<T: Publisher>(_ transform: @escaping (Self.Output) -> T) -> Publishers.SwitchToLatest<T, Publishers.Map<Self, T>> where T.Failure == Self.Failure {
-        map(transform).switchToLatest()
-    }
-}
-
-extension Publisher {
-
-    static func empty() -> AnyPublisher<Output, Failure> {
-        return Empty().eraseToAnyPublisher()
-    }
-
-    static func just(_ output: Output) -> AnyPublisher<Output, Failure> {
-        return Just(output)
-            .catch { _ in AnyPublisher<Output, Failure>.empty() }
-            .eraseToAnyPublisher()
-    }
-
-    static func fail(_ error: Failure) -> AnyPublisher<Output, Failure> {
-        return Fail(error: error).eraseToAnyPublisher()
-    }
-}
-
-class MoviesSearchViewModel: MoviesSearchViewModelType {
+final class MoviesSearchViewModel: MoviesSearchViewModelType {
 
     private weak var navigator: MoviesSearchNavigator?
     private let useCase: MoviesUseCaseType
     private var cancellables: [AnyCancellable] = []
-    struct Schedulers {
-        private init() {}
-        static let main = RunLoop.main
-        static let background = OperationQueue()
-    }
 
     init(useCase: MoviesUseCaseType, navigator: MoviesSearchNavigator) {
         self.useCase = useCase
@@ -55,15 +25,13 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
         let searchResult = trigger
             .filter({ !$0.isEmpty })
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
-            .receive(on: Schedulers.main)
             .share()
         let movies = searchResult
-            .flatMap({ result -> AnyPublisher<[Movie], Never> in
+            .flatMap({ result -> AnyPublisher<[MovieViewModel], Never> in
                 guard case .success(let movies) = result else { return .empty() }
-                return .just(movies)
+                return .just(movies.map({[unowned self] movie in self.viewModel(from: movie) }))
             })
             .removeDuplicates()
-            .subscribe(on: Schedulers.background)
             .eraseToAnyPublisher()
         let loading = Publishers.Merge(trigger.map({_ in true }), searchResult.map({ _ in false })).eraseToAnyPublisher()
         let error = searchResult
@@ -81,4 +49,25 @@ class MoviesSearchViewModel: MoviesSearchViewModelType {
 
         return MoviesSearchViewModelOuput(movies: movies, loading: loading, error: error)
     }
+
+    private func viewModel(from movie: Movie) -> MovieViewModel {
+        return MovieViewModel(id: movie.id, title: movie.title, subtitle: movie.subtitle, poster: useCase.loadImage(for: movie), rating: String(format: "%.2f", movie.voteAverage))
+    }
+}
+
+fileprivate extension Movie {
+    var subtitle: String {
+        let genresDescription = genres.map({ $0.description }).joined(separator: ", ")
+        return "\(releaseYear) | \(genresDescription)"
+    }
+    var releaseYear: Int {
+        let date = releaseDate.flatMap { Movie.dateFormatter.date(from: $0) } ?? Date()
+        return Calendar.current.component(.year, from: date)
+    }
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
 }

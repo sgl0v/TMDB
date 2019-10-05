@@ -12,9 +12,10 @@ struct Movie {
     let id: Int
     let title: String
     let overview: String
-    let poster: URL?
+    let poster: String?
     let voteAverage: Float
-    let releaseDate: Date?
+    let releaseDate: String?
+    let genres: [Genre]
 }
 
 extension Movie: Hashable {
@@ -35,5 +36,6 @@ extension Movie: Decodable {
         case poster = "poster_path"
         case voteAverage = "vote_average"
         case releaseDate = "release_date"
+        case genres = "genre_ids"
     }
 }
