@@ -11,5 +11,5 @@ import UIKit.UIImage
 import Combine
 
 protocol ImageLoaderServiceType: class {
-    func loadImage(with path: String) -> AnyPublisher<UIImage?, Never>
+    func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never>
 }

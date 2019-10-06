@@ -16,13 +16,13 @@ class MovieTableViewCell: UITableViewCell, NibProvidable, ReusableView {
     @IBOutlet private var rating: UILabel!
     @IBOutlet private var poster: UIImageView!
 
-    private var cancellables: [AnyCancellable] = []
+    private var cancellable: AnyCancellable?
 
     override func prepareForReuse() {
         super.prepareForReuse()
         poster.image = nil
-        cancellables.forEach { $0.cancel() }
-        cancellables = []
+        poster.alpha = 0.0
+        cancellable?.cancel()
     }
 }
 
@@ -31,8 +31,14 @@ extension MovieTableViewCell {
         title.text = viewModel.title
         subtitle.text = viewModel.subtitle
         rating.text = viewModel.rating
-        viewModel.poster
-            .assign(to: \UIImageView.image, on: self.poster)
-            .store(in: &cancellables)
+        cancellable = viewModel.poster.sink { [unowned self] image in self.showImage(image: image) }
+    }
+
+    private func showImage(image: UIImage?) {
+        self.poster.image = image
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
+            self.poster.alpha = 1.0
+        }
+        animator.startAnimation()
     }
 }

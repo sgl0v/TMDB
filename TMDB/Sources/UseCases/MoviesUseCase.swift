@@ -22,7 +22,7 @@ protocol MoviesUseCaseType {
     func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never>
 
     // Loads image for the given movie
-    func loadImage(for movie: Movie) -> AnyPublisher<UIImage?, Never>
+    func loadImage(for movie: Movie, size: ImageSize) -> AnyPublisher<UIImage?, Never>
 }
 
 final class MoviesUseCase: MoviesUseCaseType {
@@ -59,9 +59,7 @@ final class MoviesUseCase: MoviesUseCaseType {
             .map({ (result: Result<Movie, NetworkError>) -> Result<Movie, Error> in
                 switch result {
                 case .success(let movie): return .success(movie)
-                case .failure(let error):
-                    print(error)
-                    return .failure(error)
+                case .failure(let error): return .failure(error)
                 }
             })
             .subscribe(on: Scheduler.backgroundWorkScheduler)
@@ -69,13 +67,17 @@ final class MoviesUseCase: MoviesUseCaseType {
             .eraseToAnyPublisher()
     }
 
-    func loadImage(for movie: Movie) -> AnyPublisher<UIImage?, Never> {
-        guard let poster = movie.poster else { return .just(nil) }
-        return imageLoaderService
-            .loadImage(with: poster)
-            .subscribe(on: Scheduler.backgroundWorkScheduler)
-            .receive(on: Scheduler.mainScheduler)
-            .eraseToAnyPublisher()
+    func loadImage(for movie: Movie, size: ImageSize) -> AnyPublisher<UIImage?, Never> {
+        return Deferred<AnyPublisher<String?, Never>>
+        .just(movie.poster)
+        .flatMap({[unowned self] poster -> AnyPublisher<UIImage?, Never> in
+            guard let poster = movie.poster else { return .just(nil) }
+            let url = size.url.appendingPathComponent(poster)
+            return self.imageLoaderService.loadImage(from: url)
+        })
+        .subscribe(on: Scheduler.backgroundWorkScheduler)
+        .receive(on: Scheduler.mainScheduler)
+        .eraseToAnyPublisher()
     }
 
 }

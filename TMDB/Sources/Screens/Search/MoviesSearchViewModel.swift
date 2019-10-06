@@ -21,9 +21,11 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
-        let searchInput = input.search.debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-        let trigger = searchInput.filter({ !$0.isEmpty })
-        let movies = trigger
+        let searchInput = input.search
+            .debounce(for: .milliseconds(500), scheduler: Scheduler.mainScheduler)
+            .removeDuplicates()
+        let searchTrigger = searchInput.filter({ !$0.isEmpty })
+        let movies = searchTrigger
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .map({ result -> MoviesSearchState in
                 switch result {
@@ -33,12 +35,12 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
                 }
             })
             .eraseToAnyPublisher()
-        let loading: MoviesSearchViewModelOuput = trigger.map({_ in .loading }).eraseToAnyPublisher()
+        let loading: MoviesSearchViewModelOuput = searchTrigger.map({_ in .loading }).eraseToAnyPublisher()
 
-        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<MoviesSearchState, Never> in .just(.idle) }).eraseToAnyPublisher()
         let initialState: MoviesSearchViewModelOuput = .just(.idle)
-        let noInputState: MoviesSearchViewModelOuput = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
-        let idle: MoviesSearchViewModelOuput = Publishers.Merge3(initialState, cancelSearchState, noInputState).eraseToAnyPublisher()
+        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<MoviesSearchState, Never> in .just(.idle) }).eraseToAnyPublisher()
+        let emptySearchString: MoviesSearchViewModelOuput = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
+        let idle: MoviesSearchViewModelOuput = Publishers.Merge3(initialState, cancelSearchState, emptySearchString).eraseToAnyPublisher()
 
         input.selection
             .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
@@ -49,7 +51,7 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
 
     private func viewModels(from movies: [Movie]) -> [MovieViewModel] {
         return movies.map({[unowned self] movie in
-            return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie) })
+            return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie, size: .small) })
         })
     }
 

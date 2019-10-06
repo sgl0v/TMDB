@@ -35,6 +35,6 @@ class MovieDetailsViewModel: MovieDetailsViewModelType {
     }
 
     private func viewModel(from movie: Movie) -> MovieViewModel {
-        return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie) })
+        return MovieViewModelBuilder.viewModel(from: movie, imageLoader: {[unowned self] movie in self.useCase.loadImage(for: movie, size: .original) })
     }
 }

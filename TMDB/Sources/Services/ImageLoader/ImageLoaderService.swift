@@ -11,11 +11,27 @@ import UIKit.UIImage
 import Combine
 
 final class ImageLoaderService: ImageLoaderServiceType {
-    func loadImage(with path: String) -> AnyPublisher<UIImage?, Never> {
-        let url = ApiConstants.imageUrl.appendingPathComponent(path)
+
+    // cache with raw img data
+    private lazy var imageCache: NSCache<AnyObject, AnyObject> = {
+        let cache = NSCache<AnyObject, AnyObject>()
+        let MB = 1024 * 1024
+        cache.totalCostLimit = 10 * MB // approx memory size that the cache can hold before it starts evicting objects
+        return cache
+    }()
+
+    func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
+        if let image = self.imageCache.object(forKey: url as AnyObject) as? UIImage {
+            return .just(image)
+        }
         return URLSession.shared.dataTaskPublisher(for: url)
-            .tryMap { (data, response) -> UIImage? in return UIImage(data: data) }
+            .map { (data, response) -> UIImage? in return UIImage(data: data) }
             .catch { error in return Just(nil) }
+            .handleEvents(receiveOutput: {[unowned self] image in
+                guard let image = image else { return }
+                self.imageCache.setObject(image, forKey: url as AnyObject)
+            })
+            .print("Image loading \(url):")
             .eraseToAnyPublisher()
     }
 }
