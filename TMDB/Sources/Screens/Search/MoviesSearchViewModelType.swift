@@ -11,8 +11,6 @@ import Combine
 struct MoviesSearchViewModelInput {
     // triggered when the search query is updated
     let search: AnyPublisher<String, Never>
-    // triggered when the search is cancelled
-    let cancelSearch: AnyPublisher<Void, Never>
     /// called when the user selected an item from the list
     let selection: AnyPublisher<Int, Never>
 }

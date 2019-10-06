@@ -38,9 +38,8 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
         let loading: MoviesSearchViewModelOuput = searchTrigger.map({_ in .loading }).eraseToAnyPublisher()
 
         let initialState: MoviesSearchViewModelOuput = .just(.idle)
-        let cancelSearchState = input.cancelSearch.flatMap({ _ -> AnyPublisher<MoviesSearchState, Never> in .just(.idle) }).eraseToAnyPublisher()
         let emptySearchString: MoviesSearchViewModelOuput = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
-        let idle: MoviesSearchViewModelOuput = Publishers.Merge3(initialState, cancelSearchState, emptySearchString).eraseToAnyPublisher()
+        let idle: MoviesSearchViewModelOuput = Publishers.Merge(initialState, emptySearchString).eraseToAnyPublisher()
 
         input.selection
             .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })

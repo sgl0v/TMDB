@@ -15,7 +15,6 @@ class MoviesSearchViewController : UIViewController {
     private let viewModel: MoviesSearchViewModelType
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
-    private let cancelSearch = PassthroughSubject<Void, Never>()
     private var movies = [MovieViewModel]()
     @IBOutlet private var loadingView: UIView!
     @IBOutlet private var tableView: UITableView!
@@ -59,9 +58,7 @@ class MoviesSearchViewController : UIViewController {
     }
 
     private func bind(to viewModel: MoviesSearchViewModelType) {
-        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(),
-                                               cancelSearch: cancelSearch.eraseToAnyPublisher(),
-                                               selection: selection.eraseToAnyPublisher())
+        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher())
 
         let output = viewModel.transform(input: input)
 
@@ -102,7 +99,7 @@ extension MoviesSearchViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        cancelSearch.send(())
+        search.send("")
     }
 }
 

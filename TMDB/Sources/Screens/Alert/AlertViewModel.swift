@@ -15,21 +15,21 @@ struct AlertViewModel {
     let image: UIImage
 
     static var noResults: AlertViewModel {
-        let title = NSLocalizedString("No Results", comment: "No Results")
-        let description = NSLocalizedString("Please try searching again", comment: "Please try searching again")
+        let title = NSLocalizedString("No movies found!", comment: "No movies found!")
+        let description = NSLocalizedString("Try searching again...", comment: "Try searching again...")
         let image = UIImage(named: "search") ?? UIImage()
         return AlertViewModel(title: title, description: description, image: image)
     }
 
     static var startSearch: AlertViewModel {
-        let title = NSLocalizedString("Try searching a movie", comment: "Try searching a movie")
+        let title = NSLocalizedString("Search for a movie...", comment: "Search for a movie...")
         let image = UIImage(named: "search") ?? UIImage()
         return AlertViewModel(title: title, description: nil, image: image)
     }
 
     static var dataLoadingError: AlertViewModel {
-        let title = NSLocalizedString("Ops...", comment: "Ops...")
-        let description = NSLocalizedString("Failed to load data!", comment: "Failed to load data!")
+        let title = NSLocalizedString("Can't load search results!", comment: "Can't load search results!")
+        let description = NSLocalizedString("Something went wrong. Try searching again...", comment: "Something went wrong. Try searching again...")
         let image = UIImage(named: "error") ?? UIImage()
         return AlertViewModel(title: title, description: description, image: image)
     }
