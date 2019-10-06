@@ -12,16 +12,10 @@ import Combine
 
 final class ImageLoaderService: ImageLoaderServiceType {
 
-    // cache with raw img data
-    private lazy var imageCache: NSCache<AnyObject, AnyObject> = {
-        let cache = NSCache<AnyObject, AnyObject>()
-        let MB = 1024 * 1024
-        cache.totalCostLimit = 10 * MB // approx memory size that the cache can hold before it starts evicting objects
-        return cache
-    }()
+    private let cache: ImageCacheType = ImageCache()
 
     func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
-        if let image = self.imageCache.object(forKey: url as AnyObject) as? UIImage {
+        if let image = cache.image(for: url) {
             return .just(image)
         }
         return URLSession.shared.dataTaskPublisher(for: url)
@@ -29,7 +23,7 @@ final class ImageLoaderService: ImageLoaderServiceType {
             .catch { error in return Just(nil) }
             .handleEvents(receiveOutput: {[unowned self] image in
                 guard let image = image else { return }
-                self.imageCache.setObject(image, forKey: url as AnyObject)
+                self.cache.insertImage(image, for: url)
             })
             .print("Image loading \(url):")
             .eraseToAnyPublisher()
