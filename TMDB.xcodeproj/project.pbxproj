@@ -220,10 +220,10 @@
 		E77ACC4C2344FCB800591F41 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E74BA9C52348975400F513A5 /* Services */,
-				E74BA9B22348021800F513A5 /* UseCases */,
 				E77ACC4E2344FD0E00591F41 /* FlowCoordinators */,
 				E77ACC5B2344FEEB00591F41 /* Screens */,
+				E74BA9B22348021800F513A5 /* UseCases */,
+				E74BA9C52348975400F513A5 /* Services */,
 				E7075A8023489FF100771BE6 /* Utils */,
 				E77ACC382344FBFA00591F41 /* AppDelegate.swift */,
 				E77ACC3C2344FBFA00591F41 /* ViewController.swift */,

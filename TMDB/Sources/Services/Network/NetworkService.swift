@@ -32,7 +32,6 @@ final class NetworkService: NetworkServiceType {
                 guard 200..<300 ~= response.statusCode else {
                     return .fail(NetworkError.dataLoadingError(statusCode: response.statusCode, data: data))
                 }
-
                 return .just(data)
             }
             .decode(type: T.self, decoder: JSONDecoder())

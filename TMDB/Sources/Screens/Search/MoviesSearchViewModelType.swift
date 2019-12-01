@@ -9,6 +9,8 @@
 import Combine
 
 struct MoviesSearchViewModelInput {
+    /// called when a screen becomes visible
+    let appear: AnyPublisher<Void, Never>
     // triggered when the search query is updated
     let search: AnyPublisher<String, Never>
     /// called when the user selected an item from the list
@@ -38,10 +40,6 @@ extension MoviesSearchState: Equatable {
 
 typealias MoviesSearchViewModelOuput = AnyPublisher<MoviesSearchState, Never>
 
-protocol MoviesSearchViewModelType: class {
-    /// Trandforms input state to the output state
-    ///
-    /// - Parameter input: input state
-    /// - Returns: output state
+protocol MoviesSearchViewModelType {
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput
 }

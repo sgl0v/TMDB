@@ -12,9 +12,6 @@ import UIKit.UIImage
 
 protocol MoviesUseCaseType {
 
-    /// The sequence of popular movies
-    var popularMovies: AnyPublisher<[Movie], Error> { get }
-
     /// Runs movies search with a query string
     func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never>
 
@@ -33,10 +30,6 @@ final class MoviesUseCase: MoviesUseCaseType {
     init(networkService: NetworkServiceType, imageLoaderService: ImageLoaderServiceType) {
         self.networkService = networkService
         self.imageLoaderService = imageLoaderService
-    }
-
-    var popularMovies: AnyPublisher<[Movie], Error> {
-        fatalError()
     }
 
     func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never> {
@@ -68,8 +61,7 @@ final class MoviesUseCase: MoviesUseCaseType {
     }
 
     func loadImage(for movie: Movie, size: ImageSize) -> AnyPublisher<UIImage?, Never> {
-        return Deferred<AnyPublisher<String?, Never>>
-        .just(movie.poster)
+        return Deferred { return Just(movie.poster) }
         .flatMap({[unowned self] poster -> AnyPublisher<UIImage?, Never> in
             guard let poster = movie.poster else { return .just(nil) }
             let url = size.url.appendingPathComponent(poster)
@@ -77,6 +69,7 @@ final class MoviesUseCase: MoviesUseCaseType {
         })
         .subscribe(on: Scheduler.backgroundWorkScheduler)
         .receive(on: Scheduler.mainScheduler)
+        .share()
         .eraseToAnyPublisher()
     }
 

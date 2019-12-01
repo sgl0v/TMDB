@@ -21,11 +21,18 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
     }
 
     func transform(input: MoviesSearchViewModelInput) -> MoviesSearchViewModelOuput {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+
+        input.selection
+            .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
+            .store(in: &cancellables)
+
         let searchInput = input.search
-            .debounce(for: .milliseconds(500), scheduler: Scheduler.mainScheduler)
+            .debounce(for: .milliseconds(300), scheduler: Scheduler.mainScheduler)
             .removeDuplicates()
-        let searchTrigger = searchInput.filter({ !$0.isEmpty })
-        let movies = searchTrigger
+        let movies = searchInput
+            .filter({ !$0.isEmpty })
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .map({ result -> MoviesSearchState in
                 switch result {
@@ -35,17 +42,12 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
                 }
             })
             .eraseToAnyPublisher()
-        let loading: MoviesSearchViewModelOuput = searchTrigger.map({_ in .loading }).eraseToAnyPublisher()
 
         let initialState: MoviesSearchViewModelOuput = .just(.idle)
         let emptySearchString: MoviesSearchViewModelOuput = searchInput.filter({ $0.isEmpty }).map({ _ in .idle }).eraseToAnyPublisher()
         let idle: MoviesSearchViewModelOuput = Publishers.Merge(initialState, emptySearchString).eraseToAnyPublisher()
 
-        input.selection
-            .sink(receiveValue: { [unowned self] movieId in self.navigator?.showDetails(forMovie: movieId) })
-            .store(in: &cancellables)
-
-        return Publishers.Merge3(idle, loading, movies).removeDuplicates().eraseToAnyPublisher()
+        return Publishers.Merge(idle, movies).removeDuplicates().eraseToAnyPublisher()
     }
 
     private func viewModels(from movies: [Movie]) -> [MovieViewModel] {

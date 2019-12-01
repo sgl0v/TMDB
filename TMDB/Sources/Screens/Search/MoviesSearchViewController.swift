@@ -15,7 +15,7 @@ class MoviesSearchViewController : UIViewController {
     private let viewModel: MoviesSearchViewModelType
     private let selection = PassthroughSubject<Int, Never>()
     private let search = PassthroughSubject<String, Never>()
-    private var movies = [MovieViewModel]()
+    private let appear = PassthroughSubject<Void, Never>()
     @IBOutlet private var loadingView: UIView!
     @IBOutlet private var tableView: UITableView!
     private lazy var alertViewController = AlertViewController(nibName: nil, bundle: nil)
@@ -26,6 +26,7 @@ class MoviesSearchViewController : UIViewController {
         searchController.searchBar.delegate = self
         return searchController
     }()
+    private lazy var dataSource = makeDataSource()
 
     init(viewModel: MoviesSearchViewModelType) {
         self.viewModel = viewModel
@@ -42,13 +43,18 @@ class MoviesSearchViewController : UIViewController {
         bind(to: viewModel)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        appear.send(())
+    }
+
     private func configureUI() {
         definesPresentationContext = true
         title = NSLocalizedString("Movies", comment: "Top Movies")
 
         tableView.tableFooterView = UIView()
-        tableView.estimatedRowHeight = 100
         tableView.registerNib(cellClass: MovieTableViewCell.self)
+        tableView.dataSource = dataSource
 
         navigationItem.searchController = self.searchController
         searchController.isActive = true
@@ -58,7 +64,11 @@ class MoviesSearchViewController : UIViewController {
     }
 
     private func bind(to viewModel: MoviesSearchViewModelType) {
-        let input = MoviesSearchViewModelInput(search: search.eraseToAnyPublisher(), selection: selection.eraseToAnyPublisher())
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        let input = MoviesSearchViewModelInput(appear: appear.eraseToAnyPublisher(),
+                                               search: search.eraseToAnyPublisher(),
+                                               selection: selection.eraseToAnyPublisher())
 
         let output = viewModel.transform(input: input)
 
@@ -70,25 +80,57 @@ class MoviesSearchViewController : UIViewController {
     private func render(_ state: MoviesSearchState) {
         switch state {
         case .idle:
-            self.alertViewController.view.isHidden = false
-            self.alertViewController.showStartSearch()
-            self.loadingView.isHidden = true
+            alertViewController.view.isHidden = false
+            alertViewController.showStartSearch()
+            loadingView.isHidden = true
+            update(with: [], animate: true)
         case .loading:
-            self.alertViewController.view.isHidden = true
-            self.loadingView.isHidden = false
+            alertViewController.view.isHidden = true
+            loadingView.isHidden = false
+            update(with: [], animate: true)
         case .noResults:
-            self.alertViewController.view.isHidden = false
-            self.alertViewController.showNoResults()
-            self.loadingView.isHidden = true
+            alertViewController.view.isHidden = false
+            alertViewController.showNoResults()
+            loadingView.isHidden = true
+            update(with: [], animate: true)
         case .failure:
-            self.alertViewController.view.isHidden = false
-            self.alertViewController.showDataLoadingError()
-            self.loadingView.isHidden = true
+            alertViewController.view.isHidden = false
+            alertViewController.showDataLoadingError()
+            loadingView.isHidden = true
+            update(with: [], animate: true)
         case .success(let movies):
-            self.alertViewController.view.isHidden = true
-            self.loadingView.isHidden = true
-            self.movies = movies
-            self.tableView.reloadData()
+            alertViewController.view.isHidden = true
+            loadingView.isHidden = true
+            update(with: movies, animate: true)
+        }
+    }
+}
+
+fileprivate extension MoviesSearchViewController {
+    enum Section: CaseIterable {
+        case movies
+    }
+
+    func makeDataSource() -> UITableViewDiffableDataSource<Section, MovieViewModel> {
+        return UITableViewDiffableDataSource(
+            tableView: tableView,
+            cellProvider: {  tableView, indexPath, movieViewModel in
+                guard let cell = tableView.dequeueReusableCell(withClass: MovieTableViewCell.self) else {
+                    assertionFailure("Failed to dequeue \(MovieTableViewCell.self)!")
+                    return UITableViewCell()
+                }
+                cell.bind(to: movieViewModel)
+                return cell
+            }
+        )
+    }
+
+    func update(with movies: [MovieViewModel], animate: Bool = true) {
+        DispatchQueue.main.async {
+            var snapshot = NSDiffableDataSourceSnapshot<Section, MovieViewModel>()
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems(movies, toSection: .movies)
+            self.dataSource.apply(snapshot, animatingDifferences: animate)
         }
     }
 }
@@ -103,23 +145,11 @@ extension MoviesSearchViewController: UISearchBarDelegate {
     }
 }
 
-extension MoviesSearchViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withClass: MovieTableViewCell.self) else {
-            assertionFailure("Failed to dequeue \(MovieTableViewCell.self)!")
-            return UITableViewCell()
-        }
-        cell.configure(with: movies[indexPath.row])
-        return cell
-    }
+extension MoviesSearchViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selection.send(movies[indexPath.row].id)
+        let snapshot = dataSource.snapshot()
+        selection.send(snapshot.itemIdentifiers[indexPath.row].id)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 

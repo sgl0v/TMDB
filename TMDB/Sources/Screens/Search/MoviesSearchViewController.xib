@@ -23,7 +23,6 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="bHx-uc-9ag"/>
                         <outlet property="delegate" destination="-1" id="dJK-T6-310"/>
                     </connections>
                 </tableView>

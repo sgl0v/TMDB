@@ -15,19 +15,15 @@ class MovieTableViewCell: UITableViewCell, NibProvidable, ReusableView {
     @IBOutlet private var subtitle: UILabel!
     @IBOutlet private var rating: UILabel!
     @IBOutlet private var poster: UIImageView!
-
     private var cancellable: AnyCancellable?
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        poster.image = nil
-        poster.alpha = 0.0
-        cancellable?.cancel()
+        cancelImageLoading()
     }
-}
 
-extension MovieTableViewCell {
-    func configure(with viewModel: MovieViewModel) {
+    func bind(to viewModel: MovieViewModel) {
+        cancelImageLoading()
         title.text = viewModel.title
         subtitle.text = viewModel.subtitle
         rating.text = viewModel.rating
@@ -35,10 +31,18 @@ extension MovieTableViewCell {
     }
 
     private func showImage(image: UIImage?) {
-        self.poster.image = image
-        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear) {
-            self.poster.alpha = 1.0
-        }
-        animator.startAnimation()
+        cancelImageLoading()
+        UIView.transition(with: self.poster,
+        duration: 0.3,
+        options: [.curveEaseOut, .transitionCrossDissolve],
+        animations: {
+            self.poster.image = image
+        })
     }
+
+    private func cancelImageLoading() {
+        poster.image = nil
+        cancellable?.cancel()
+    }
+
 }
