@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,16 @@
 		E74BA9CB2348978300F513A5 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74BA9CA2348978300F513A5 /* Resource.swift */; };
 		E74BA9CE234897B300F513A5 /* ImageLoaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74BA9CD234897B300F513A5 /* ImageLoaderService.swift */; };
 		E74BA9D1234897C300F513A5 /* ImageLoaderServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74BA9D0234897C300F513A5 /* ImageLoaderServiceType.swift */; };
+		E7693A672465A2DF00CF49BE /* TMDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A662465A2DF00CF49BE /* TMDBTests.swift */; };
+		E7693A702465CE9F00CF49BE /* EarlGrey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7693A6F2465CE9F00CF49BE /* EarlGrey.framework */; platformFilter = ios; };
+		E7693A722465D01300CF49BE /* EarlGrey.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E7693A6F2465CE9F00CF49BE /* EarlGrey.framework */; platformFilter = ios; };
+		E7693A742465D09A00CF49BE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A732465D09A00CF49BE /* main.swift */; };
+		E7693A762465D22A00CF49BE /* FakeAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A752465D22A00CF49BE /* FakeAppDelegate.swift */; };
+		E7693A792465DBFC00CF49BE /* AutoMockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A782465DBFC00CF49BE /* AutoMockable.swift */; };
+		E7693A7B2465DC7800CF49BE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A7A2465DC7800CF49BE /* AutoMockable.generated.swift */; };
+		E7693A7D2466AA7E00CF49BE /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A7C2466AA7E00CF49BE /* AccessibilityIdentifiers.swift */; };
+		E7693A7E2466AAF000CF49BE /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A7C2466AA7E00CF49BE /* AccessibilityIdentifiers.swift */; };
+		E7693A802466AC6500CF49BE /* EarlGrey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A7F2466AC6500CF49BE /* EarlGrey.swift */; };
 		E77ACC392344FBFA00591F41 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC382344FBFA00591F41 /* AppDelegate.swift */; };
 		E77ACC3D2344FBFA00591F41 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC3C2344FBFA00591F41 /* ViewController.swift */; };
 		E77ACC422344FBFB00591F41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E77ACC412344FBFB00591F41 /* Assets.xcassets */; };
@@ -51,6 +61,29 @@
 		E7E8A18D23464B7B00C2210A /* MoviesSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E8A18C23464B7B00C2210A /* MoviesSearchViewController.xib */; };
 		E7E8A18F23464C8000C2210A /* MovieDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E7E8A18E23464C8000C2210A /* MovieDetailsViewController.xib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E7693A692465A2DF00CF49BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E77ACC2D2344FBFA00591F41 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E77ACC342344FBFA00591F41;
+			remoteInfo = TMDB;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E7693A712465D00700CF49BE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(TEST_HOST)/..";
+			dstSubfolderSpec = 0;
+			files = (
+				E7693A722465D01300CF49BE /* EarlGrey.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E7075A7A23489A6D00771BE6 /* Resource+Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Resource+Movie.swift"; sourceTree = "<group>"; };
@@ -76,6 +109,16 @@
 		E74BA9CA2348978300F513A5 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		E74BA9CD234897B300F513A5 /* ImageLoaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderService.swift; sourceTree = "<group>"; };
 		E74BA9D0234897C300F513A5 /* ImageLoaderServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderServiceType.swift; sourceTree = "<group>"; };
+		E7693A642465A2DF00CF49BE /* TMDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7693A662465A2DF00CF49BE /* TMDBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTests.swift; sourceTree = "<group>"; };
+		E7693A682465A2DF00CF49BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7693A6F2465CE9F00CF49BE /* EarlGrey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EarlGrey.framework; sourceTree = "<group>"; };
+		E7693A732465D09A00CF49BE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E7693A752465D22A00CF49BE /* FakeAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAppDelegate.swift; sourceTree = "<group>"; };
+		E7693A782465DBFC00CF49BE /* AutoMockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.swift; sourceTree = "<group>"; };
+		E7693A7A2465DC7800CF49BE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
+		E7693A7C2466AA7E00CF49BE /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		E7693A7F2466AC6500CF49BE /* EarlGrey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarlGrey.swift; sourceTree = "<group>"; };
 		E77ACC352344FBFA00591F41 /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77ACC382344FBFA00591F41 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E77ACC3C2344FBFA00591F41 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +144,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E7693A612465A2DF00CF49BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7693A702465CE9F00CF49BE /* EarlGrey.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77ACC322344FBFA00591F41 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				E7075A812348A00600771BE6 /* Publisher+Utils.swift */,
+				E7693A782465DBFC00CF49BE /* AutoMockable.swift */,
+				E7693A7C2466AA7E00CF49BE /* AccessibilityIdentifiers.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -191,10 +244,40 @@
 			path = ImageLoader;
 			sourceTree = "<group>";
 		};
+		E7693A652465A2DF00CF49BE /* TMDBTests */ = {
+			isa = PBXGroup;
+			children = (
+				E7693A7F2466AC6500CF49BE /* EarlGrey.swift */,
+				E7693A772465DBBE00CF49BE /* Mocks */,
+				E7693A662465A2DF00CF49BE /* TMDBTests.swift */,
+				E7693A752465D22A00CF49BE /* FakeAppDelegate.swift */,
+				E7693A6E2465CE9F00CF49BE /* Frameworks */,
+				E7693A682465A2DF00CF49BE /* Info.plist */,
+			);
+			path = TMDBTests;
+			sourceTree = "<group>";
+		};
+		E7693A6E2465CE9F00CF49BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E7693A6F2465CE9F00CF49BE /* EarlGrey.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		E7693A772465DBBE00CF49BE /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E7693A7A2465DC7800CF49BE /* AutoMockable.generated.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		E77ACC2C2344FBFA00591F41 = {
 			isa = PBXGroup;
 			children = (
 				E77ACC372344FBFA00591F41 /* TMDB */,
+				E7693A652465A2DF00CF49BE /* TMDBTests */,
 				E77ACC362344FBFA00591F41 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -203,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				E77ACC352344FBFA00591F41 /* TMDB.app */,
+				E7693A642465A2DF00CF49BE /* TMDBTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -227,6 +311,7 @@
 				E7075A8023489FF100771BE6 /* Utils */,
 				E77ACC382344FBFA00591F41 /* AppDelegate.swift */,
 				E77ACC3C2344FBFA00591F41 /* ViewController.swift */,
+				E7693A732465D09A00CF49BE /* main.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -293,6 +378,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E7693A632465A2DF00CF49BE /* TMDBTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7693A6D2465A2DF00CF49BE /* Build configuration list for PBXNativeTarget "TMDBTests" */;
+			buildPhases = (
+				E7693A602465A2DF00CF49BE /* Sources */,
+				E7693A612465A2DF00CF49BE /* Frameworks */,
+				E7693A622465A2DF00CF49BE /* Resources */,
+				E7693A712465D00700CF49BE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7693A6A2465A2DF00CF49BE /* PBXTargetDependency */,
+			);
+			name = TMDBTests;
+			productName = TMDBTests;
+			productReference = E7693A642465A2DF00CF49BE /* TMDBTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E77ACC342344FBFA00591F41 /* TMDB */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E77ACC492344FBFB00591F41 /* Build configuration list for PBXNativeTarget "TMDB" */;
@@ -316,10 +420,14 @@
 		E77ACC2D2344FBFA00591F41 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Maksym Shcheglov";
 				TargetAttributes = {
+					E7693A632465A2DF00CF49BE = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = E77ACC342344FBFA00591F41;
+					};
 					E77ACC342344FBFA00591F41 = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -339,11 +447,19 @@
 			projectRoot = "";
 			targets = (
 				E77ACC342344FBFA00591F41 /* TMDB */,
+				E7693A632465A2DF00CF49BE /* TMDBTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E7693A622465A2DF00CF49BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77ACC332344FBFA00591F41 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -360,6 +476,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E7693A602465A2DF00CF49BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7693A802466AC6500CF49BE /* EarlGrey.swift in Sources */,
+				E7693A672465A2DF00CF49BE /* TMDBTests.swift in Sources */,
+				E7693A762465D22A00CF49BE /* FakeAppDelegate.swift in Sources */,
+				E7693A7B2465DC7800CF49BE /* AutoMockable.generated.swift in Sources */,
+				E7693A7E2466AAF000CF49BE /* AccessibilityIdentifiers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E77ACC312344FBFA00591F41 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -371,6 +499,7 @@
 				E7BE3FAE234A23C6004E51EE /* ImageSize.swift in Sources */,
 				E77ACC69234501CB00591F41 /* MovieDetailsViewModelType.swift in Sources */,
 				E7075A7D23489B4700771BE6 /* ServicesProvider.swift in Sources */,
+				E7693A7D2466AA7E00CF49BE /* AccessibilityIdentifiers.swift in Sources */,
 				E74BA9BC234805E300F513A5 /* MovieTableViewCell.swift in Sources */,
 				E7075A862348A26000771BE6 /* MovieViewModel.swift in Sources */,
 				E77ACC3D2344FBFA00591F41 /* ViewController.swift in Sources */,
@@ -398,13 +527,23 @@
 				E77ACC502344FD2100591F41 /* FlowCoordinator.swift in Sources */,
 				E7075A922348C9D400771BE6 /* UIViewController+Child.swift in Sources */,
 				E74BA9B62348029600F513A5 /* Movie.swift in Sources */,
+				E7693A742465D09A00CF49BE /* main.swift in Sources */,
 				E7075A822348A00600771BE6 /* Publisher+Utils.swift in Sources */,
 				E77ACC632345006100591F41 /* MoviesSearchViewModelType.swift in Sources */,
+				E7693A792465DBFC00CF49BE /* AutoMockable.swift in Sources */,
 				E74BA9C223488FFB00F513A5 /* Genre.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E7693A6A2465A2DF00CF49BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E77ACC342344FBFA00591F41 /* TMDB */;
+			targetProxy = E7693A692465A2DF00CF49BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E77ACC432344FBFB00591F41 /* LaunchScreen.storyboard */ = {
@@ -418,6 +557,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E7693A6B2465A2DF00CF49BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TMDBTests/Frameworks",
+				);
+				INFOPLIST_FILE = TMDBTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sgl0v.TMDBTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TMDB.app/TMDB";
+			};
+			name = Debug;
+		};
+		E7693A6C2465A2DF00CF49BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TMDBTests/Frameworks",
+				);
+				INFOPLIST_FILE = TMDBTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sgl0v.TMDBTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TMDB.app/TMDB";
+			};
+			name = Release;
+		};
 		E77ACC472344FBFB00591F41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -569,6 +756,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E7693A6D2465A2DF00CF49BE /* Build configuration list for PBXNativeTarget "TMDBTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7693A6B2465A2DF00CF49BE /* Debug */,
+				E7693A6C2465A2DF00CF49BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E77ACC302344FBFA00591F41 /* Build configuration list for PBXProject "TMDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

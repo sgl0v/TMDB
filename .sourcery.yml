@@ -1,0 +1,6 @@
+sources:
+  - TMDB/Sources
+templates:
+  - TMDBTests/Mocks
+output:
+  TMDBTests/Mocks

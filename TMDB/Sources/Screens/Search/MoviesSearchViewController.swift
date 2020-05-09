@@ -24,6 +24,7 @@ class MoviesSearchViewController : UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.tintColor = UIColor.black
         searchController.searchBar.delegate = self
+        searchController.searchBar.searchTextField.accessibilityIdentifier = AccessibilityIdentifiers.MoviesSearch.searchTextFieldId
         return searchController
     }()
     private lazy var dataSource = makeDataSource()
@@ -51,7 +52,9 @@ class MoviesSearchViewController : UIViewController {
     private func configureUI() {
         definesPresentationContext = true
         title = NSLocalizedString("Movies", comment: "Top Movies")
+        view.accessibilityIdentifier = AccessibilityIdentifiers.MoviesSearch.rootViewId
 
+        tableView.accessibilityIdentifier = AccessibilityIdentifiers.MoviesSearch.tableViewId
         tableView.tableFooterView = UIView()
         tableView.registerNib(cellClass: MovieTableViewCell.self)
         tableView.dataSource = dataSource

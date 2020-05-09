@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol MoviesSearchNavigator: class {
+protocol MoviesSearchNavigator: AutoMockable, AnyObject {
     /// Presents the movies details screen
     func showDetails(forMovie movieId: Int)
 }

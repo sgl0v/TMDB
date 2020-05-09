@@ -10,6 +10,6 @@ import Foundation
 import UIKit.UIImage
 import Combine
 
-protocol ImageLoaderServiceType: class {
+protocol ImageLoaderServiceType: AnyObject {
     func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never>
 }
