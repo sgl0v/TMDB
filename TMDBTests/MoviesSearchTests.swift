@@ -11,54 +11,9 @@ import EarlGrey
 import Combine
 @testable import TMDB
 
-class MoviesSearchTests: XCTestCase {
+class MoviesSearchTests: TMDBTestCase {
     
-    lazy var factory = ApplicationComponentsFactory(servicesProvider: ServicesProvider(network: networkService, imageLoader: imageLoader))
-    lazy var networkService = NetworkServiceTypeMock()
-    lazy var imageLoader: ImageLoaderServiceType = {
-        let mock = ImageLoaderServiceTypeMock()
-        mock.loadImageFromClosure = { _ in
-            return Just(UIImage()).eraseToAnyPublisher()
-        }
-        return mock
-    }()
     let moviesSearchNavigator = MoviesSearchNavigatorMock()
-    
-    override func setUp() {
-        setupEarlGrey()
-    }
-    
-    func test_intialState() {
-        // GIVEN /WHEN
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
-        
-        // THEN
-        EarlGrey.selectElement(with: grey_text("Movies")).assert(grey_sufficientlyVisible())
-        EarlGrey
-            .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.Alert.rootViewId))
-            .assert(grey_sufficientlyVisible())
-        EarlGrey
-            .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.Alert.titleLabelId))
-            .assert(grey_text("Search for a movie..."))
-        EarlGrey
-            .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.tableViewId))
-            .assert(grey_notVisible())
-    }
-    
-    func test_startMoviesSearch_whenTypeSearchText() {
-        // GIVEN
-        networkService.loadResponseFilename = "MoviesSearchResults"
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
-        
-        // WHEN
-        EarlGrey
-            .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.searchTextFieldId))
-            .perform(grey_typeText("Once"))
-        
-        // THEN
-        EarlGrey.selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.tableViewId))
-            .assert(createTableViewRowsAssert(rowsCount: 7, inSection: 0))
-    }
     
     func test_intialState() {
         // GIVEN /WHEN
@@ -72,29 +27,63 @@ class MoviesSearchTests: XCTestCase {
             .assertTitle("Search for a movie...")
     }
     
-    func test_startMoviesSearch_whenTypeSearchText2() {
+    func test_startMoviesSearch_whenTypeSearchText() {
         // GIVEN
-        networkService.loadResponseFilename = "MoviesSearchResults"
+        let movies = Movies.loadFromFile("Movies.json")
+        networkService.responses["/3/search/movie"] = movies
         open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
         
         // WHEN
-        Page.on(MoviesSearchPage.self).search("Once")
+        Page.on(MoviesSearchPage.self).search("jok")
         
         // THEN
-        Page.on(MoviesSearchPage.self).assertMoviesCount(7)
-    }
-        
-    private func createTableViewRowsAssert(rowsCount: Int, inSection section: Int) -> GREYAssertion {
-        return GREYAssertionBlock(name: "TableViewRowsAssert") { (element, error) -> Bool in
-            guard let tableView = element as? UITableView, tableView.numberOfSections > section else {
-                return false
-            }
-            let numberOfCells = tableView.numberOfRows(inSection: section)
-            return numberOfCells == rowsCount
-        }
+        Page.on(MoviesSearchPage.self).assertMoviesCount(movies.items.count)
     }
     
-    private func dismissKeyboard() {
-      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    func test_showError_whenNoResultsFound() {
+        // GIVEN
+        networkService.responses["/3/search/movie"] = Movies(items: [])
+        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        
+        // WHEN
+        Page.on(MoviesSearchPage.self).search("jok")
+        
+        // THEN
+        Page.on(MoviesSearchPage.self)
+            .assertContentIsHidden()
+            .on(AlertPage.self)
+            .assertTitle("No movies found!")
+            .assertDescription("Try searching again...")
     }
+    
+    func test_showError_whenDataLoadingFailed() {
+        // GIVEN
+        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        
+        // WHEN
+        Page.on(MoviesSearchPage.self).search("jok")
+        
+        // THEN
+        Page.on(MoviesSearchPage.self)
+            .assertContentIsHidden()
+            .on(AlertPage.self)
+            .assertTitle("Can't load search results!")
+            .assertDescription("Something went wrong. Try searching again...")
+    }
+    
+    func test_showDetails_whenTapOnItem() {
+        // GIVEN
+        let movies = Movies.loadFromFile("Movies.json")
+        networkService.responses["/3/search/movie"] = movies
+        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        
+        // WHEN
+        Page.on(MoviesSearchPage.self)
+            .search("jok")
+            .tapCell(at: 0)
+        
+        // THEN
+        XCTAssertTrue(moviesSearchNavigator.showDetailsForMovieCalled)
+    }
+
 }

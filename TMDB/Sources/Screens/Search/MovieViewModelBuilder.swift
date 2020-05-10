@@ -21,7 +21,7 @@ struct MovieViewModelBuilder {
     }
 }
 
-fileprivate extension Movie {
+extension Movie {
     var genreNames: [String] {
         if let genreIds = genreIds {
             return genreIds.map { $0.description }

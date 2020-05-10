@@ -122,6 +122,7 @@ fileprivate extension MoviesSearchViewController {
                     assertionFailure("Failed to dequeue \(MovieTableViewCell.self)!")
                     return UITableViewCell()
                 }
+                cell.accessibilityIdentifier = "\(AccessibilityIdentifiers.MoviesSearch.cellId).\(indexPath.row)"
                 cell.bind(to: movieViewModel)
                 return cell
             }

@@ -12,17 +12,24 @@ import EarlGrey
 class MoviesSearchPage: Page {
     
     override func verify() {
-        EarlGrey.selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.rootViewId)).assert(grey_notNil())
+        assertExists(AccessibilityIdentifiers.MoviesSearch.rootViewId)
     }
 }
 
 // MARK: Actions
 extension MoviesSearchPage {
     
-    func search(_ query: String) {
+    @discardableResult
+    func search(_ query: String) -> Self {
         EarlGrey
             .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.searchTextFieldId))
             .perform(grey_typeText(query))
+        return dismissKeyboard()
+    }
+    
+    @discardableResult
+    func tapCell(at index: Int) -> Self {
+        return performTap(withId: "\(AccessibilityIdentifiers.MoviesSearch.cellId).\(index)")
     }
 }
 
@@ -40,9 +47,11 @@ extension MoviesSearchPage {
         return assertHidden(AccessibilityIdentifiers.MoviesSearch.tableViewId)
     }
     
+    @discardableResult
     func assertMoviesCount(_ rowsCount: Int) -> Self {
         EarlGrey.selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.MoviesSearch.tableViewId))
             .assert(createTableViewRowsAssert(rowsCount: rowsCount, inSection: 0))
+        return self
     }
 
     private func createTableViewRowsAssert(rowsCount: Int, inSection section: Int) -> GREYAssertion {

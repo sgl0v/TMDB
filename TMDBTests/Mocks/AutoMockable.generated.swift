@@ -74,25 +74,16 @@ class NetworkServiceTypeMock: NetworkServiceType {
     var loadCalled: Bool {
         return loadCallsCount > 0
     }
-    var loadResponseFilename: String?
+    var responses = [String:Any]()
 
     func load<T: Decodable>(_ resource: Resource<T>) -> AnyPublisher<Result<T, NetworkError>, Never> {
         loadCallsCount += 1
         let result: Result<T, NetworkError>
-        if let filename = loadResponseFilename {
-            result = .success(modelFromFile(filename))
+        if let response = responses[resource.url.path] {
+            result = .success(response as! T)
         } else {
             result = .failure(NetworkError.invalidRequest)
         }
         return Just<Result<T, NetworkError>>(result).eraseToAnyPublisher()
-    }
-    private func modelFromFile<T: Decodable>(_ name: String) -> T {
-        do {
-            let path = Bundle(for: EarlGrey.self).path(forResource: name, ofType: "json")!
-            let data = try Data(contentsOf: URL(fileURLWithPath: path))
-            return try JSONDecoder().decode(T.self, from: data)
-        } catch {
-            fatalError("Error: \(error)")
-        }
     }
 }

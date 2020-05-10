@@ -8,8 +8,25 @@
 
 import XCTest
 import EarlGrey
+@testable import TMDB
 
-extension XCTestCase {
+class TMDBTestCase: XCTestCase {
+    
+    lazy var factory = ApplicationComponentsFactory(servicesProvider: ServicesProvider(network: networkService, imageLoader: imageLoader))
+    lazy var networkService = NetworkServiceTypeMock()
+    lazy var imageLoader: ImageLoaderServiceType = {
+        let mock = ImageLoaderServiceTypeMock()
+        mock.loadImageFromClosure = { _ in
+            let image = UIImage(named: "joker.jpg", in: Bundle(for: EarlGrey.self), compatibleWith: nil)
+            return .just(image)
+        }
+        return mock
+    }()
+
+    override func setUp() {
+        setupEarlGrey()
+    }
+    
     private func setupEarlGrey() {
         GREYConfiguration.sharedInstance().setValue(false, forConfigKey: kGREYConfigKeyAnalyticsEnabled) // Disable Google analytics tracking
         GREYConfiguration.sharedInstance().setValue(5.0, forConfigKey: kGREYConfigKeyInteractionTimeoutDuration) // use 5s timeout for any interaction
@@ -34,6 +51,30 @@ extension XCTestCase {
             window.rootViewController?.present(viewControllerToOpen, animated: false, completion: nil)
         } else {
             window.rootViewController = viewControllerToOpen
+        }
+    }
+}
+
+//extension Movies {
+//    static func loadFromFile(_ filename: String) -> Movies {
+//        do {
+//            let path = Bundle(for: EarlGrey.self).path(forResource: filename, ofType: nil)!
+//            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+//            return try JSONDecoder().decode(Movies.self, from: data)
+//        } catch {
+//            fatalError("Error: \(error)")
+//        }
+//    }
+//}
+
+extension Decodable {
+    static func loadFromFile(_ filename: String) -> Self {
+        do {
+            let path = Bundle(for: EarlGrey.self).path(forResource: filename, ofType: nil)!
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+            return try JSONDecoder().decode(Self.self, from: data)
+        } catch {
+            fatalError("Error: \(error)")
         }
     }
 }

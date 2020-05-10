@@ -33,6 +33,12 @@ class MovieDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.rootViewId
+        contentView.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.contentViewId
+        header.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.titleLabelId
+        subtitle.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.subtitleLabelId
+        overview.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.descriptionLabelId
+        loadingIndicator.accessibilityIdentifier = AccessibilityIdentifiers.MovieDetails.loadingIndicatorId
         bind(to: viewModel)
     }
 

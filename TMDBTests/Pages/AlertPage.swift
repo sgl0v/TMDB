@@ -11,15 +11,18 @@ import EarlGrey
 
 class AlertPage: Page {
     
-    override var accessibilityID: String {
-        return AccessibilityIdentifiers.Alert.rootViewId
+    override func verify() {
+        assertVisible(AccessibilityIdentifiers.Alert.rootViewId)
     }
     
     @discardableResult
     func assertTitle(_ text: String) -> Self {
-        EarlGrey
-            .selectElement(with: grey_accessibilityID(AccessibilityIdentifiers.Alert.titleLabelId))
-            .assert(grey_text(text))
-        return self
+        return assertLabelText(AccessibilityIdentifiers.Alert.titleLabelId, text)
     }
+    
+    @discardableResult
+    func assertDescription(_ text: String) -> Self {
+        return assertLabelText(AccessibilityIdentifiers.Alert.descriptionLabelId, text)
+    }
+
 }

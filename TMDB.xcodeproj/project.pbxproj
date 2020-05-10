@@ -41,11 +41,15 @@
 		E7693A802466AC6500CF49BE /* EarlGrey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A7F2466AC6500CF49BE /* EarlGrey.swift */; };
 		E7693A822466AF0B00CF49BE /* AutoMockable.stencil in Resources */ = {isa = PBXBuildFile; fileRef = E7693A812466AF0B00CF49BE /* AutoMockable.stencil */; };
 		E7693A842466AF4F00CF49BE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693A832466AF4F00CF49BE /* AutoMockable.generated.swift */; };
-		E7693A872466B49F00CF49BE /* MoviesSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = E7693A862466B49F00CF49BE /* MoviesSearchResults.json */; };
-		E7693AAB2468907800CF49BE /* XCTestCase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AAA2468907800CF49BE /* XCTestCase+Utils.swift */; };
+		E7693A872466B49F00CF49BE /* Movies.json in Resources */ = {isa = PBXBuildFile; fileRef = E7693A862466B49F00CF49BE /* Movies.json */; };
+		E7693AAB2468907800CF49BE /* TMDBTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AAA2468907800CF49BE /* TMDBTestCase.swift */; };
 		E7693AAE246890CA00CF49BE /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AAD246890CA00CF49BE /* Page.swift */; };
 		E7693AB0246890F400CF49BE /* MoviesSearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AAF246890F400CF49BE /* MoviesSearchPage.swift */; };
 		E7693AB22468911F00CF49BE /* AlertPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AB12468911F00CF49BE /* AlertPage.swift */; };
+		E7693AB424689B0D00CF49BE /* MovieDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AB324689B0D00CF49BE /* MovieDetailsTests.swift */; };
+		E7693AB624689BB100CF49BE /* joker.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E7693AB524689BB100CF49BE /* joker.jpg */; };
+		E7693AB824689CA400CF49BE /* MovieDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = E7693AB724689CA400CF49BE /* MovieDetails.json */; };
+		E7693ABA24689D9A00CF49BE /* MovieDetailsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AB924689D9A00CF49BE /* MovieDetailsPage.swift */; };
 		E77ACC392344FBFA00591F41 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC382344FBFA00591F41 /* AppDelegate.swift */; };
 		E77ACC3D2344FBFA00591F41 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC3C2344FBFA00591F41 /* ViewController.swift */; };
 		E77ACC422344FBFB00591F41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E77ACC412344FBFB00591F41 /* Assets.xcassets */; };
@@ -126,11 +130,15 @@
 		E7693A7F2466AC6500CF49BE /* EarlGrey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarlGrey.swift; sourceTree = "<group>"; };
 		E7693A812466AF0B00CF49BE /* AutoMockable.stencil */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AutoMockable.stencil; sourceTree = "<group>"; };
 		E7693A832466AF4F00CF49BE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
-		E7693A862466B49F00CF49BE /* MoviesSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MoviesSearchResults.json; sourceTree = "<group>"; };
-		E7693AAA2468907800CF49BE /* XCTestCase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Utils.swift"; sourceTree = "<group>"; };
+		E7693A862466B49F00CF49BE /* Movies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Movies.json; sourceTree = "<group>"; };
+		E7693AAA2468907800CF49BE /* TMDBTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTestCase.swift; sourceTree = "<group>"; };
 		E7693AAD246890CA00CF49BE /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		E7693AAF246890F400CF49BE /* MoviesSearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesSearchPage.swift; sourceTree = "<group>"; };
 		E7693AB12468911F00CF49BE /* AlertPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPage.swift; sourceTree = "<group>"; };
+		E7693AB324689B0D00CF49BE /* MovieDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsTests.swift; sourceTree = "<group>"; };
+		E7693AB524689BB100CF49BE /* joker.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = joker.jpg; sourceTree = "<group>"; };
+		E7693AB724689CA400CF49BE /* MovieDetails.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MovieDetails.json; sourceTree = "<group>"; };
+		E7693AB924689D9A00CF49BE /* MovieDetailsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPage.swift; sourceTree = "<group>"; };
 		E77ACC352344FBFA00591F41 /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77ACC382344FBFA00591F41 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E77ACC3C2344FBFA00591F41 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				E7693A662465A2DF00CF49BE /* MoviesSearchTests.swift */,
+				E7693AB324689B0D00CF49BE /* MovieDetailsTests.swift */,
+				E77ACC362344FBFA00591F41 /* Products */,
 				E7693AAC246890C100CF49BE /* Pages */,
 				E7693A882466B4AD00CF49BE /* Utils */,
 				E7693A852466B48E00CF49BE /* Responses */,
@@ -290,7 +300,9 @@
 		E7693A852466B48E00CF49BE /* Responses */ = {
 			isa = PBXGroup;
 			children = (
-				E7693A862466B49F00CF49BE /* MoviesSearchResults.json */,
+				E7693AB524689BB100CF49BE /* joker.jpg */,
+				E7693A862466B49F00CF49BE /* Movies.json */,
+				E7693AB724689CA400CF49BE /* MovieDetails.json */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -300,7 +312,7 @@
 			children = (
 				E7693A752465D22A00CF49BE /* FakeAppDelegate.swift */,
 				E7693A7F2466AC6500CF49BE /* EarlGrey.swift */,
-				E7693AAA2468907800CF49BE /* XCTestCase+Utils.swift */,
+				E7693AAA2468907800CF49BE /* TMDBTestCase.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -310,6 +322,7 @@
 			children = (
 				E7693AAD246890CA00CF49BE /* Page.swift */,
 				E7693AAF246890F400CF49BE /* MoviesSearchPage.swift */,
+				E7693AB924689D9A00CF49BE /* MovieDetailsPage.swift */,
 				E7693AB12468911F00CF49BE /* AlertPage.swift */,
 			);
 			path = Pages;
@@ -320,7 +333,6 @@
 			children = (
 				E77ACC372344FBFA00591F41 /* TMDB */,
 				E7693A652465A2DF00CF49BE /* TMDBTests */,
-				E77ACC362344FBFA00591F41 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -331,6 +343,7 @@
 				E7693A642465A2DF00CF49BE /* TMDBTests.xctest */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		E77ACC372344FBFA00591F41 /* TMDB */ = {
@@ -499,8 +512,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7693AB624689BB100CF49BE /* joker.jpg in Resources */,
 				E7693A822466AF0B00CF49BE /* AutoMockable.stencil in Resources */,
-				E7693A872466B49F00CF49BE /* MoviesSearchResults.json in Resources */,
+				E7693A872466B49F00CF49BE /* Movies.json in Resources */,
+				E7693AB824689CA400CF49BE /* MovieDetails.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,10 +539,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7693ABA24689D9A00CF49BE /* MovieDetailsPage.swift in Sources */,
 				E7693AB22468911F00CF49BE /* AlertPage.swift in Sources */,
 				E7693A802466AC6500CF49BE /* EarlGrey.swift in Sources */,
 				E7693A672465A2DF00CF49BE /* MoviesSearchTests.swift in Sources */,
-				E7693AAB2468907800CF49BE /* XCTestCase+Utils.swift in Sources */,
+				E7693AB424689B0D00CF49BE /* MovieDetailsTests.swift in Sources */,
+				E7693AAB2468907800CF49BE /* TMDBTestCase.swift in Sources */,
 				E7693A762465D22A00CF49BE /* FakeAppDelegate.swift in Sources */,
 				E7693AAE246890CA00CF49BE /* Page.swift in Sources */,
 				E7693A7E2466AAF000CF49BE /* AccessibilityIdentifiers.swift in Sources */,

@@ -10,12 +10,14 @@ import XCTest
 import EarlGrey
 
 class Page {
+    required init () { verify() }
+    
     func verify() {
         fatalError("Override \(#function) function in a subclass!")
     }
     
     static func on<T: Page>(_ type: T.Type) -> T {
-        return T().verify()
+        return T()
     }
     
     func on<T: Page>(_ type: T.Type) -> T {
@@ -84,4 +86,11 @@ extension Page {
         EarlGrey.selectElement(with: grey_accessibilityID(accessibilityID)).perform(grey_scrollToContentEdge(.bottom))
         return self
     }
+    
+    @discardableResult
+    func dismissKeyboard() -> Self {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        return self
+    }
+
 }

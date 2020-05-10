@@ -1,0 +1,140 @@
+{
+    "page": 1,
+    "total_results": 56,
+    "total_pages": 3,
+    "results": [
+        {
+            "popularity": 100.861,
+            "vote_count": 12242,
+            "video": false,
+            "poster_path": "\/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+            "id": 475557,
+            "adult": false,
+            "backdrop_path": "\/f5F4cRhQdUbyVbB5lTNCwUzD6BP.jpg",
+            "original_language": "en",
+            "original_title": "Joker",
+            "genre_ids": [
+                80,
+                18,
+                53
+            ],
+            "title": "Joker",
+            "vote_average": 8.2,
+            "overview": "During the 1980s, a failed stand-up comedian is driven insane and turns to a life of crime and chaos in Gotham City while becoming an infamous psychopathic crime figure.",
+            "release_date": "2019-10-02"
+        },
+        {
+            "popularity": 3.827,
+            "vote_count": 25,
+            "video": false,
+            "poster_path": "\/vsTCxQvilO6GSMDL9IVl61bNL1D.jpg",
+            "id": 129507,
+            "adult": false,
+            "backdrop_path": null,
+            "original_language": "hi",
+            "original_title": "Joker",
+            "genre_ids": [
+                35,
+                878
+            ],
+            "title": "Joker",
+            "vote_average": 3.6,
+            "overview": "In 1947 when the maps of India and Pakistan were being drawn, an oversight ensured that the village of Paglapur didn't find a place in either country. Over 60 years later, Paglapur is isolated, and in need of help. The residents seek help, but as a direct result of being left off the map, they find noone willing to accept Paglapur, and its problems, as their jurisdiction. The villagers decide they need to draw media attention to Paglapur, and in so doing, gain acceptance and help from those who had previously denied them.",
+            "release_date": "2012-08-31"
+        },
+        {
+            "popularity": 11.698,
+            "vote_count": 383,
+            "video": false,
+            "poster_path": "\/7RlBs0An83fqAuKfwH5gKMcqgMc.jpg",
+            "id": 16234,
+            "adult": false,
+            "backdrop_path": "\/scNssnn5PN99fBODNzxF5qN4Iw8.jpg",
+            "original_language": "en",
+            "original_title": "Batman Beyond: Return of the Joker",
+            "genre_ids": [
+                28,
+                16,
+                878,
+                10751
+            ],
+            "title": "Batman Beyond: Return of the Joker",
+            "vote_average": 7.5,
+            "overview": "The Joker is back with a vengeance, and Gotham's newest Dark Knight needs answers as he stands alone to face Gotham's most infamous Clown Prince of Crime.",
+            "release_date": "2000-12-12"
+        },
+        {
+            "popularity": 3.093,
+            "vote_count": 9,
+            "video": false,
+            "poster_path": null,
+            "id": 214711,
+            "adult": false,
+            "backdrop_path": null,
+            "original_language": "en",
+            "original_title": "Joker Rising",
+            "genre_ids": [
+                80
+            ],
+            "title": "Joker Rising",
+            "vote_average": 6.5,
+            "overview": "The dark and gritty story of where the Joker came from and how he became the villain that he is today.",
+            "release_date": "2013-09-21"
+        },
+        {
+            "popularity": 4.645,
+            "vote_count": 140,
+            "video": false,
+            "poster_path": "\/brxoc8xjWRWGoRMGLy1NV59LeYF.jpg",
+            "id": 133792,
+            "adult": false,
+            "backdrop_path": "\/dV5XTZg4H3h60iiF6oSbPR0uPz7.jpg",
+            "original_language": "en",
+            "original_title": "The Joker Is Wild",
+            "genre_ids": [
+                18
+            ],
+            "title": "The Joker Is Wild",
+            "vote_average": 8.4,
+            "overview": "Frank Sinatra stars in director Charles Vidor's 1957 film biography of nightclub entertainer Joe E. Lewis. The cast also includes Mitzi Gaynor, Jeanne Crain, Eddie Albert, Beverly Garland, Jackie Coogan, Harold Huber, Barry Kelley, Ted de Corsia, Ned Glass, Mary Treen and Sid Melton.",
+            "release_date": "1957-09-26"
+        },
+        {
+            "popularity": 4.331,
+            "vote_count": 11,
+            "video": false,
+            "poster_path": "\/9jCuI9ysebWcE9gAR7V3ZASRt5V.jpg",
+            "id": 416572,
+            "adult": false,
+            "backdrop_path": "\/fihXbO1gnEcoeYNzSdV8864XLSS.jpg",
+            "original_language": "en",
+            "original_title": "Joker's Poltergeist",
+            "genre_ids": [
+                27,
+                53
+            ],
+            "title": "Joker's Poltergeist",
+            "vote_average": 4.4,
+            "overview": "After a clown-masked assailant guns down Aurora's Place, the resident theater owner fights to re-open her business.",
+            "release_date": "2015-06-03"
+        },
+        {
+            "popularity": 0.945,
+            "id": 146486,
+            "video": false,
+            "vote_count": 9,
+            "vote_average": 4.8,
+            "title": "Joker",
+            "release_date": "1991-11-01",
+            "original_language": "sv",
+            "original_title": "Joker",
+            "genre_ids": [
+                35
+            ],
+            "backdrop_path": "\/53WIxWs7RWUja4CzE3TJOQ2xjVv.jpg",
+            "adult": false,
+            "overview": "",
+            "poster_path": "\/rY8eu4yQTwpZgz8BEVKfGIh8TUG.jpg"
+        }
+    ]
+}
