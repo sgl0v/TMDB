@@ -55,18 +55,6 @@ class TMDBTestCase: XCTestCase {
     }
 }
 
-//extension Movies {
-//    static func loadFromFile(_ filename: String) -> Movies {
-//        do {
-//            let path = Bundle(for: EarlGrey.self).path(forResource: filename, ofType: nil)!
-//            let data = try Data(contentsOf: URL(fileURLWithPath: path))
-//            return try JSONDecoder().decode(Movies.self, from: data)
-//        } catch {
-//            fatalError("Error: \(error)")
-//        }
-//    }
-//}
-
 extension Decodable {
     static func loadFromFile(_ filename: String) -> Self {
         do {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-private let unitTestAppDelegateClass: AnyClass? = NSClassFromString("TMDBTests.FakeAppDelegate")
-private let appDelegateClass: AnyClass = unitTestAppDelegateClass ?? AppDelegate.self
+private let fakeAppDelegateClass: AnyClass? = NSClassFromString("TMDBTests.FakeAppDelegate")
+private let appDelegateClass: AnyClass = fakeAppDelegateClass ?? AppDelegate.self
 
 _ = UIApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, NSStringFromClass(appDelegateClass))
