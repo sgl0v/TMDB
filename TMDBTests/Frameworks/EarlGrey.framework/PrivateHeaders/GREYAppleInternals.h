@@ -221,6 +221,11 @@ IOHIDEventRef IOHIDEventCreateDigitizerFingerEvent(CFAllocatorRef allocator,
 - (void)_setIsFirstTouchForView:(BOOL)first;
 
 /**
+ * Must be set to @c YES for new touches on iOS 14.
+ */
+- (void)_setIsTapToClick:(BOOL)isTap;
+
+/**
  *  Sets flag marking this touch as a tap.
  *
  *  @param isTap A boolean to indicate that this is a tap.
@@ -419,5 +424,22 @@ IOHIDEventRef IOHIDEventCreateDigitizerFingerEvent(CFAllocatorRef allocator,
  *  @return The UITextField that contains the accessibility text field element.
  */
 -(UITextField *)textField;
+
+@end
+
+/**
+ * The selection view for a view for text input - textfields, textviews, keyboard-related objects,
+ * webview text input etc.
+ */
+@interface UITextSelectionView : NSObject
+
+/**
+ * Enable or disable the animation for the caret blinking started after the text is input.
+ *
+ * @param enabled A BOOL specifying the behavior of the caret's blinking animation.
+ *
+ * @return Was the animation enabled or disabled.
+ */
+- (BOOL)_setCaretBlinkAnimationEnabled:(BOOL)enabled;
 
 @end
