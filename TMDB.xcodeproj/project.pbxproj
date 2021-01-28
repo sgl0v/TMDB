@@ -51,7 +51,6 @@
 		E7693AB824689CA400CF49BE /* MovieDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = E7693AB724689CA400CF49BE /* MovieDetails.json */; };
 		E7693ABA24689D9A00CF49BE /* MovieDetailsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7693AB924689D9A00CF49BE /* MovieDetailsPage.swift */; };
 		E77ACC392344FBFA00591F41 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC382344FBFA00591F41 /* AppDelegate.swift */; };
-		E77ACC3D2344FBFA00591F41 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC3C2344FBFA00591F41 /* ViewController.swift */; };
 		E77ACC422344FBFB00591F41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E77ACC412344FBFB00591F41 /* Assets.xcassets */; };
 		E77ACC452344FBFB00591F41 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E77ACC432344FBFB00591F41 /* LaunchScreen.storyboard */; };
 		E77ACC502344FD2100591F41 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77ACC4F2344FD2100591F41 /* FlowCoordinator.swift */; };
@@ -141,7 +140,6 @@
 		E7693AB924689D9A00CF49BE /* MovieDetailsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPage.swift; sourceTree = "<group>"; };
 		E77ACC352344FBFA00591F41 /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77ACC382344FBFA00591F41 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E77ACC3C2344FBFA00591F41 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E77ACC412344FBFB00591F41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E77ACC442344FBFB00591F41 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E77ACC462344FBFB00591F41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 				E74BA9C52348975400F513A5 /* Services */,
 				E7075A8023489FF100771BE6 /* Utils */,
 				E77ACC382344FBFA00591F41 /* AppDelegate.swift */,
-				E77ACC3C2344FBFA00591F41 /* ViewController.swift */,
 				E7693A732465D09A00CF49BE /* main.swift */,
 			);
 			path = Sources;
@@ -567,7 +564,6 @@
 				E7693A7D2466AA7E00CF49BE /* AccessibilityIdentifiers.swift in Sources */,
 				E74BA9BC234805E300F513A5 /* MovieTableViewCell.swift in Sources */,
 				E7075A862348A26000771BE6 /* MovieViewModel.swift in Sources */,
-				E77ACC3D2344FBFA00591F41 /* ViewController.swift in Sources */,
 				E7BE3FB0234A59E9004E51EE /* ImageCache.swift in Sources */,
 				E7075A882348B5DA00771BE6 /* MovieViewModelBuilder.swift in Sources */,
 				E7075A7B23489A6D00771BE6 /* Resource+Movie.swift in Sources */,
