@@ -22,7 +22,7 @@ class MoviesSearchViewController : UIViewController {
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.tintColor = UIColor.black
+        searchController.searchBar.tintColor = .label
         searchController.searchBar.delegate = self
         searchController.searchBar.searchTextField.accessibilityIdentifier = AccessibilityIdentifiers.MoviesSearch.searchTextFieldId
         return searchController

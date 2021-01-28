@@ -25,9 +25,7 @@ class ApplicationFlowCoordinator: FlowCoordinator {
     /// Creates all necessary dependencies and starts the flow
     func start() {
 
-        let searchNavigationController = UINavigationController()
-        searchNavigationController.navigationBar.tintColor = UIColor.black
-
+        let searchNavigationController = dependencyProvider.rootViewController()
         self.window.rootViewController = searchNavigationController
 
         let searchFlowCoordinator = MoviesSearchFlowCoordinator(rootController: searchNavigationController, dependencyProvider: self.dependencyProvider)

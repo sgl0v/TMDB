@@ -23,7 +23,7 @@ extension ApplicationComponentsFactory: ApplicationFlowCoordinatorDependencyProv
 
     func rootViewController() -> UINavigationController {
         let rootViewController = UINavigationController()
-        rootViewController.navigationBar.tintColor = UIColor.black
+        rootViewController.navigationBar.tintColor = .label
         return rootViewController
     }
 }

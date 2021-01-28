@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,42 +23,49 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wx3-Im-10r">
-                    <rect key="frame" x="97" y="347.5" width="220" height="211.5"/>
+                    <rect key="frame" x="109" y="382" width="196" height="142.5"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="sgk-nR-Usr">
-                            <rect key="frame" x="46" y="0.0" width="128" height="128"/>
+                            <rect key="frame" x="66" y="0.0" width="64" height="64"/>
+                            <color key="tintColor" systemColor="labelColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="128" id="WXa-8e-e0B"/>
-                                <constraint firstAttribute="width" constant="128" id="d7i-Fk-v8k"/>
+                                <constraint firstAttribute="width" secondItem="sgk-nR-Usr" secondAttribute="height" id="Dyc-BO-l4d"/>
+                                <constraint firstAttribute="width" constant="64" id="d7i-Fk-v8k"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="###No Movies" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6x-lU-mYV">
-                            <rect key="frame" x="45" y="148" width="130" height="24"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <rect key="frame" x="39.5" y="84" width="117.5" height="21.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="###Start searching for movies" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnp-qq-Oky">
-                            <rect key="frame" x="0.0" y="192" width="220" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="0.0" y="125.5" width="196" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                 </stackView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="ZLf-cA-8vO"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="wx3-Im-10r" firstAttribute="centerX" secondItem="ZLf-cA-8vO" secondAttribute="centerX" id="6rO-dR-dc8"/>
                 <constraint firstItem="wx3-Im-10r" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZLf-cA-8vO" secondAttribute="leading" constant="8" id="VzF-HQ-vjA"/>
                 <constraint firstItem="ZLf-cA-8vO" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wx3-Im-10r" secondAttribute="trailing" constant="8" id="rCX-yI-3JK"/>
                 <constraint firstItem="wx3-Im-10r" firstAttribute="centerY" secondItem="ZLf-cA-8vO" secondAttribute="centerY" id="uRO-cW-J9B"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="ZLf-cA-8vO"/>
             <point key="canvasLocation" x="34.5" y="111.5"/>
         </view>
     </objects>
     <resources>
         <image name="search" width="24" height="24"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
