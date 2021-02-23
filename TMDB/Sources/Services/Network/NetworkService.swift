@@ -21,7 +21,7 @@ final class NetworkService: NetworkServiceType {
         guard let request = resource.request else {
             return .just(.failure(NetworkError.invalidRequest))
         }
-        return URLSession.shared.dataTaskPublisher(for: request)
+        return session.dataTaskPublisher(for: request)
             .mapError { _ in NetworkError.invalidRequest }
             .print()
             .flatMap { data, response -> AnyPublisher<Data, Error> in

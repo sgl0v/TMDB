@@ -35,6 +35,6 @@ extension MovieDetailsState: Equatable {
 
 typealias MovieDetailsViewModelOutput = AnyPublisher<MovieDetailsState, Never>
 
-protocol MovieDetailsViewModelType: class {
+protocol MovieDetailsViewModelType: AnyObject {
     func transform(input: MovieDetailsViewModelInput) -> MovieDetailsViewModelOutput
 }
