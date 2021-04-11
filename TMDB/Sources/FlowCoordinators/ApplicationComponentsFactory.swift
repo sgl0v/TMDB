@@ -21,18 +21,12 @@ final class ApplicationComponentsFactory {
 
 extension ApplicationComponentsFactory: ApplicationFlowCoordinatorDependencyProvider {
 
-    func rootViewController() -> UINavigationController {
-        let rootViewController = UINavigationController()
-        rootViewController.navigationBar.tintColor = .label
-        return rootViewController
-    }
-}
-
-extension ApplicationComponentsFactory: MoviesSearchFlowCoordinatorDependencyProvider {
-
-    func moviesSearchController(navigator: MoviesSearchNavigator) -> UIViewController {
+    func moviesSearchNavigationController(navigator: MoviesSearchNavigator) -> UINavigationController {
         let viewModel = MoviesSearchViewModel(useCase: useCase, navigator: navigator)
-        return MoviesSearchViewController(viewModel: viewModel)
+        let moviesSearchViewController = MoviesSearchViewController(viewModel: viewModel)
+        let moviesSearchNavigationController = UINavigationController(rootViewController: moviesSearchViewController)
+        moviesSearchNavigationController.navigationBar.tintColor = .label
+        return moviesSearchNavigationController
     }
 
     func movieDetailsController(_ movieId: Int) -> UIViewController {

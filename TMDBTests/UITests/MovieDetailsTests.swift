@@ -21,7 +21,7 @@ class MovieDetailsTests: TMDBTestCase {
         networkService.responses["/3/movie/\(movieId)"] = movieDetails
         
         // WHEN
-        open(viewController: factory.movieDetailsController(movieId))
+        open(viewController: factory.movieDetailsController(movieId), flags: .embedInNavigation)
         
         // THEN
         Page.on(MovieDetailsPage.self)
@@ -32,7 +32,7 @@ class MovieDetailsTests: TMDBTestCase {
     
     func test_showError_whenDataLoadingFailed() {
         // GIVEN / WHEN
-        open(viewController: factory.movieDetailsController(movieId))
+        open(viewController: factory.movieDetailsController(movieId), flags: .embedInNavigation)
         
         
         // THEN

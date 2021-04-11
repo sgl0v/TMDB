@@ -11,7 +11,7 @@ import UIKit
 /// The application flow coordinator. Takes responsibility about coordinating view controllers and driving the flow
 class ApplicationFlowCoordinator: FlowCoordinator {
 
-    typealias DependencyProvider = ApplicationFlowCoordinatorDependencyProvider & MoviesSearchFlowCoordinatorDependencyProvider
+    typealias DependencyProvider = ApplicationFlowCoordinatorDependencyProvider
 
     private let window: UIWindow
     private let dependencyProvider: DependencyProvider
@@ -24,14 +24,9 @@ class ApplicationFlowCoordinator: FlowCoordinator {
 
     /// Creates all necessary dependencies and starts the flow
     func start() {
-
-        let searchNavigationController = dependencyProvider.rootViewController()
-        self.window.rootViewController = searchNavigationController
-
-        let searchFlowCoordinator = MoviesSearchFlowCoordinator(rootController: searchNavigationController, dependencyProvider: self.dependencyProvider)
+        let searchFlowCoordinator = MoviesSearchFlowCoordinator(window: window, dependencyProvider: self.dependencyProvider)
+        childCoordinators = [searchFlowCoordinator]
         searchFlowCoordinator.start()
-
-        self.childCoordinators = [searchFlowCoordinator]
     }
 
 }

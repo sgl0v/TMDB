@@ -12,7 +12,7 @@ import Combine
 protocol NetworkServiceType: AnyObject {
 
     @discardableResult
-    func load<T: Decodable>(_ resource: Resource<T>) -> AnyPublisher<Result<T, NetworkError>, Never>
+    func load<T>(_ resource: Resource<T>) -> AnyPublisher<T, Error>
 }
 
 /// Defines the Network service errors.

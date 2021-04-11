@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 // swiftlint:disable line_length
@@ -67,6 +67,65 @@ class MoviesSearchNavigatorMock: MoviesSearchNavigator {
 
 
 }
+class MoviesUseCaseTypeMock: MoviesUseCaseType {
+
+    //MARK: - searchMovies
+
+    var searchMoviesWithCallsCount = 0
+    var searchMoviesWithCalled: Bool {
+        return searchMoviesWithCallsCount > 0
+    }
+    var searchMoviesWithReceivedName: String?
+    var searchMoviesWithReceivedInvocations: [String] = []
+    var searchMoviesWithReturnValue: AnyPublisher<Result<Movies, Error>, Never>!
+    var searchMoviesWithClosure: ((String) -> AnyPublisher<Result<Movies, Error>, Never>)?
+
+    func searchMovies(with name: String) -> AnyPublisher<Result<Movies, Error>, Never> {
+        searchMoviesWithCallsCount += 1
+        searchMoviesWithReceivedName = name
+        searchMoviesWithReceivedInvocations.append(name)
+        return searchMoviesWithClosure.map({ $0(name) }) ?? searchMoviesWithReturnValue
+    }
+
+    //MARK: - movieDetails
+
+    var movieDetailsWithCallsCount = 0
+    var movieDetailsWithCalled: Bool {
+        return movieDetailsWithCallsCount > 0
+    }
+    var movieDetailsWithReceivedId: Int?
+    var movieDetailsWithReceivedInvocations: [Int] = []
+    var movieDetailsWithReturnValue: AnyPublisher<Result<Movie, Error>, Never>!
+    var movieDetailsWithClosure: ((Int) -> AnyPublisher<Result<Movie, Error>, Never>)?
+
+    func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never> {
+        movieDetailsWithCallsCount += 1
+        movieDetailsWithReceivedId = id
+        movieDetailsWithReceivedInvocations.append(id)
+        return movieDetailsWithClosure.map({ $0(id) }) ?? movieDetailsWithReturnValue
+    }
+
+    //MARK: - loadImage
+
+    var loadImageForSizeCallsCount = 0
+    var loadImageForSizeCalled: Bool {
+        return loadImageForSizeCallsCount > 0
+    }
+    var loadImageForSizeReceivedArguments: (movie: Movie, size: ImageSize)?
+    var loadImageForSizeReceivedInvocations: [(movie: Movie, size: ImageSize)] = []
+    var loadImageForSizeReturnValue: AnyPublisher<UIImage?, Never>!
+    var loadImageForSizeClosure: ((Movie, ImageSize) -> AnyPublisher<UIImage?, Never>)?
+
+    func loadImage(for movie: Movie, size: ImageSize) -> AnyPublisher<UIImage?, Never> {
+        loadImageForSizeCallsCount += 1
+        loadImageForSizeReceivedArguments = (movie: movie, size: size)
+        loadImageForSizeReceivedInvocations.append((movie: movie, size: size))
+        return loadImageForSizeClosure.map({ $0(movie, size) }) ?? loadImageForSizeReturnValue
+    }
+
+
+
+}
 
 class NetworkServiceTypeMock: NetworkServiceType {
 
@@ -76,14 +135,26 @@ class NetworkServiceTypeMock: NetworkServiceType {
     }
     var responses = [String:Any]()
 
-    func load<T: Decodable>(_ resource: Resource<T>) -> AnyPublisher<Result<T, NetworkError>, Never> {
-        loadCallsCount += 1
-        let result: Result<T, NetworkError>
-        if let response = responses[resource.url.path] {
-            result = .success(response as! T)
+    func load<T>(_ resource: Resource<T>) -> AnyPublisher<T, Error> {
+        if let response = responses[resource.url.path] as? T {
+            return .just(response)
+        } else if let error = responses[resource.url.path] as? NetworkError {
+            return .fail(error)
         } else {
-            result = .failure(NetworkError.invalidRequest)
+            return .fail(NetworkError.invalidRequest)
         }
-        return Just<Result<T, NetworkError>>(result).eraseToAnyPublisher()
+    }
+}
+
+class ApplicationFlowCoordinatorDependencyProviderMock: ApplicationFlowCoordinatorDependencyProvider {
+
+    var moviesSearchNavigationControllerReturnValue: UINavigationController?
+    func moviesSearchNavigationController(navigator: MoviesSearchNavigator) -> UINavigationController {
+        return moviesSearchNavigationControllerReturnValue!
+    }
+
+    var movieDetailsControllerReturnValue: UIViewController?
+    func movieDetailsController(_ movieId: Int) -> UIViewController {
+        return movieDetailsControllerReturnValue!
     }
 }

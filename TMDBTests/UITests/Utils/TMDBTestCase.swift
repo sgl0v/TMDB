@@ -41,7 +41,7 @@ class TMDBTestCase: XCTestCase {
         static let all: OpenViewControllerFlags = [.presentModally, .embedInNavigation]
     }
     
-    func open(viewController: UIViewController, flags: OpenViewControllerFlags = .all) {
+    func open(viewController: UIViewController, flags: OpenViewControllerFlags = .presentModally) {
         let viewControllerToOpen = flags.contains(.embedInNavigation) ? UINavigationController(rootViewController: viewController) : viewController
         viewControllerToOpen.modalPresentationStyle = .fullScreen
         let window = (UIApplication.shared.delegate as! FakeAppDelegate).window!

@@ -10,10 +10,10 @@ import Foundation
 import Combine
 import UIKit.UIImage
 
-protocol MoviesUseCaseType {
+protocol MoviesUseCaseType: AutoMockable {
 
     /// Runs movies search with a query string
-    func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never>
+    func searchMovies(with name: String) -> AnyPublisher<Result<Movies, Error>, Never>
 
     /// Fetches details for movie with specified id
     func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never>
@@ -32,15 +32,11 @@ final class MoviesUseCase: MoviesUseCaseType {
         self.imageLoaderService = imageLoaderService
     }
 
-    func searchMovies(with name: String) -> AnyPublisher<Result<[Movie], Error>, Never> {
+    func searchMovies(with name: String) -> AnyPublisher<Result<Movies, Error>, Never> {
         return networkService
             .load(Resource<Movies>.movies(query: name))
-            .map({ (result: Result<Movies, NetworkError>) -> Result<[Movie], Error> in
-                switch result {
-                case .success(let movies): return .success(movies.items)
-                case .failure(let error): return .failure(error)
-                }
-            })
+            .map { .success($0) }
+            .catch { error -> AnyPublisher<Result<Movies, Error>, Never> in .just(.failure(error)) }
             .subscribe(on: Scheduler.backgroundWorkScheduler)
             .receive(on: Scheduler.mainScheduler)
             .eraseToAnyPublisher()
@@ -49,12 +45,8 @@ final class MoviesUseCase: MoviesUseCaseType {
     func movieDetails(with id: Int) -> AnyPublisher<Result<Movie, Error>, Never> {
         return networkService
             .load(Resource<Movie>.details(movieId: id))
-            .map({ (result: Result<Movie, NetworkError>) -> Result<Movie, Error> in
-                switch result {
-                case .success(let movie): return .success(movie)
-                case .failure(let error): return .failure(error)
-                }
-            })
+            .map { .success($0) }
+            .catch { error -> AnyPublisher<Result<Movie, Error>, Never> in .just(.failure(error)) }
             .subscribe(on: Scheduler.backgroundWorkScheduler)
             .receive(on: Scheduler.mainScheduler)
             .eraseToAnyPublisher()

@@ -10,26 +10,27 @@ import UIKit
 
 /// The `MoviesSearchFlowCoordinator` takes control over the flows on the movies search screen
 class MoviesSearchFlowCoordinator: FlowCoordinator {
-    fileprivate let rootController: UINavigationController
+    fileprivate let window: UIWindow
+    fileprivate var searchNavigationController: UINavigationController?
     fileprivate let dependencyProvider: MoviesSearchFlowCoordinatorDependencyProvider
 
-    init(rootController: UINavigationController, dependencyProvider: MoviesSearchFlowCoordinatorDependencyProvider) {
-        self.rootController = rootController
+    init(window: UIWindow, dependencyProvider: MoviesSearchFlowCoordinatorDependencyProvider) {
+        self.window = window
         self.dependencyProvider = dependencyProvider
     }
 
     func start() {
-        let searchController = self.dependencyProvider.moviesSearchController(navigator: self)
-        self.rootController.setViewControllers([searchController], animated: false)
+        let searchNavigationController = dependencyProvider.moviesSearchNavigationController(navigator: self)
+        window.rootViewController = searchNavigationController
+        self.searchNavigationController = searchNavigationController
     }
-
 }
 
 extension MoviesSearchFlowCoordinator: MoviesSearchNavigator {
 
     func showDetails(forMovie movieId: Int) {
         let controller = self.dependencyProvider.movieDetailsController(movieId)
-        self.rootController.pushViewController(controller, animated: true)
+        searchNavigationController?.pushViewController(controller, animated: true)
     }
 
 }

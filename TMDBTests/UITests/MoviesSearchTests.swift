@@ -17,7 +17,7 @@ class MoviesSearchTests: TMDBTestCase {
     
     func test_intialState() {
         // GIVEN /WHEN
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        open(viewController: factory.moviesSearchNavigationController(navigator: moviesSearchNavigator))
         
         // THEN
         Page.on(MoviesSearchPage.self)
@@ -31,7 +31,7 @@ class MoviesSearchTests: TMDBTestCase {
         // GIVEN
         let movies = Movies.loadFromFile("Movies.json")
         networkService.responses["/3/search/movie"] = movies
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        open(viewController: factory.moviesSearchNavigationController(navigator: moviesSearchNavigator))
         
         // WHEN
         Page.on(MoviesSearchPage.self).search("jok")
@@ -43,7 +43,7 @@ class MoviesSearchTests: TMDBTestCase {
     func test_showError_whenNoResultsFound() {
         // GIVEN
         networkService.responses["/3/search/movie"] = Movies(items: [])
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        open(viewController: factory.moviesSearchNavigationController(navigator: moviesSearchNavigator))
         
         // WHEN
         Page.on(MoviesSearchPage.self).search("jok")
@@ -58,7 +58,7 @@ class MoviesSearchTests: TMDBTestCase {
     
     func test_showError_whenDataLoadingFailed() {
         // GIVEN
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        open(viewController: factory.moviesSearchNavigationController(navigator: moviesSearchNavigator))
         
         // WHEN
         Page.on(MoviesSearchPage.self).search("jok")
@@ -75,7 +75,7 @@ class MoviesSearchTests: TMDBTestCase {
         // GIVEN
         let movies = Movies.loadFromFile("Movies.json")
         networkService.responses["/3/search/movie"] = movies
-        open(viewController: factory.moviesSearchController(navigator: moviesSearchNavigator))
+        open(viewController: factory.moviesSearchNavigationController(navigator: moviesSearchNavigator))
         
         // WHEN
         Page.on(MoviesSearchPage.self)

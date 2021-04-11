@@ -36,9 +36,9 @@ final class MoviesSearchViewModel: MoviesSearchViewModelType {
             .flatMapLatest({[unowned self] query in self.useCase.searchMovies(with: query) })
             .map({ result -> MoviesSearchState in
                 switch result {
-                    case .success([]): return .noResults
-                    case .success(let movies): return .success(self.viewModels(from: movies))
-                    case .failure(let error): return .failure(error)
+                case .success(let movies) where movies.items.isEmpty: return .noResults
+                case .success(let movies): return .success(self.viewModels(from: movies.items))
+                case .failure(let error): return .failure(error)
                 }
             })
             .eraseToAnyPublisher()

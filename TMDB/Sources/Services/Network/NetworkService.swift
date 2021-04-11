@@ -17,9 +17,9 @@ final class NetworkService: NetworkServiceType {
     }
 
     @discardableResult
-    func load<T>(_ resource: Resource<T>) -> AnyPublisher<Result<T, NetworkError>, Never> {
+    func load<T>(_ resource: Resource<T>) -> AnyPublisher<T, Error> {
         guard let request = resource.request else {
-            return .just(.failure(NetworkError.invalidRequest))
+            return .fail(NetworkError.invalidRequest)
         }
         return session.dataTaskPublisher(for: request)
             .mapError { _ in NetworkError.invalidRequest }
@@ -35,10 +35,6 @@ final class NetworkService: NetworkServiceType {
                 return .just(data)
             }
             .decode(type: T.self, decoder: JSONDecoder())
-        .map { .success($0) }
-        .catch ({ error -> AnyPublisher<Result<T, NetworkError>, Never> in
-            return .just(.failure(NetworkError.jsonDecodingError(error: error)))
-        })
         .eraseToAnyPublisher()
     }
 
