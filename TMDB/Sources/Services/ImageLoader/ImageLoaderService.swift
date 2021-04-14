@@ -11,21 +11,23 @@ import UIKit.UIImage
 import Combine
 
 final class ImageLoaderService: ImageLoaderServiceType {
-
+    
     private let cache: ImageCacheType = ImageCache()
-
-    func loadImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
+    
+    func loadImage(from url: URL, placeholder: UIImage? = nil) -> AnyPublisher<UIImage?, Never> {
         if let image = cache.image(for: url) {
             return .just(image)
         }
         return URLSession.shared.dataTaskPublisher(for: url)
-            .map { (data, response) -> UIImage? in return UIImage(data: data) }
-            .catch { error in return Just(nil) }
-            .handleEvents(receiveOutput: {[unowned self] image in
-                guard let image = image else { return }
+            .tryMap { data, response -> UIImage in
+                guard let image = UIImage(data: data) else {
+                    throw NSError(domain: "", code: 1, userInfo: nil)
+                }
+                
                 self.cache.insertImage(image, for: url)
-            })
-            .print("Image loading \(url):")
+                return image
+            }
+            .replaceError(with: placeholder)
             .eraseToAnyPublisher()
     }
 }
