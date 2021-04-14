@@ -53,16 +53,19 @@ final class MoviesUseCase: MoviesUseCaseType {
     }
 
     func loadImage(for movie: Movie, size: ImageSize) -> AnyPublisher<UIImage?, Never> {
-        return Deferred { return Just(movie.poster) }
-        .flatMap({[unowned self] poster -> AnyPublisher<UIImage?, Never> in
-            guard let poster = movie.poster else { return .just(nil) }
-            let url = size.url.appendingPathComponent(poster)
-            return self.imageLoaderService.loadImage(from: url)
-        })
-        .subscribe(on: Scheduler.backgroundWorkScheduler)
-        .receive(on: Scheduler.mainScheduler)
-        .share()
-        .eraseToAnyPublisher()
+        guard let poster = movie.poster else { return .just(nil) }
+        let url = size.url.appendingPathComponent(poster)
+        return imageLoaderService.loadImage(from: url, placeholder: imageFrom(color: .gray))
     }
-
+    
+    func imageFrom(color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img!
+    }
 }
